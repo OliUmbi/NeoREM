@@ -1,0 +1,22 @@
+{
+  "name": "NeoREM",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "vite": "^6.3.3",
+    "typescript": "^5.8.3"
+  }
+}

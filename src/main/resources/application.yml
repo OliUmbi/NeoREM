@@ -1,0 +1,23 @@
+server:
+  port: 8000
+
+spring:
+  datasource:
+    url: jdbc:sqlite:data/neorem.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    hibernate:
+      dialect: org.hibernate.community.dialect.SQLiteDialect
+    properties:
+      hibernate.dialect: org.hibernate.community.dialect.SQLiteDialect
+    show-sql: true
+    ddl-auto: update
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /docs
