@@ -13,6 +13,12 @@ Radiation Exposure Monitoring inspired by OpenREM
 
 ## Development
 
+### Commands
+```
+mvn clean -Dmaven.wagon.http.ssl.insecure=true
+mvn spring-boot:run -Dmaven.wagon.http.ssl.insecure=true
+```
+
 ### Features
 - [ ] Dicom import
 - [ ] HL7 import

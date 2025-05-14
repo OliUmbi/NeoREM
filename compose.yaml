@@ -1,0 +1,53 @@
+services:
+  mock_pacs:
+    container_name: mock-pacs
+    restart: unless-stopped
+    image: orthancteam/orthanc
+    ports:
+      - "105:105"
+      - "8042:8042"
+    environment:
+      MANUFACTURERS_TO_IGNORE: "{}"
+      MODEL_NAMES_TO_IGNORE: "{}"
+      STATION_NAMES_TO_IGNORE: "{}"
+      SOFTWARE_VERSIONS_TO_IGNORE: "{}"
+      DEVICE_SERIAL_NUMBERS_TO_IGNORE: "{}"
+      USE_TOSHIBA_CT_EXTRACTOR: "true"
+      TOSHIBA_EXTRACTOR_SYSTEMS: |
+        {
+          {
+            "Toshiba", 
+            "Aquilion"
+          }, 
+          {
+            "GE Medical Systems", 
+            "Discovery STE"
+          }
+        }
+      USE_PHYSICS_FILTERING: "true"
+      PHYSICS_TO_KEEP: |
+        {
+          "physics"
+        }
+      ORTHANC_JSON: |
+        {
+          "Name": "Mock PACS", 
+          "DicomAet": "MOCK_PACS", 
+          "RemoteAccessAllowed": true, 
+          "AuthenticationEnabled": true, 
+          "HttpServerEnabled": true, 
+          "DicomPort": 105, 
+          "RegisteredUsers": {
+            "root": "root"
+          }, 
+          "DicomWeb": {
+            "Enable" : true
+          }, 
+          "DicomModalities": {
+            "NeoREM": [
+              "NEOREM", 
+              "localhost", 
+              104
+            ]
+          }
+        }

@@ -22,7 +22,7 @@
         <xerial.sqlite.version>3.49.1.0</xerial.sqlite.version>
         <flyway.version>11.8.1</flyway.version>
         <lombok.version>1.18.38</lombok.version>
-        <dcm4che.dicom.version>2.0.29</dcm4che.dicom.version>
+        <dcm4che.dicom.version>5.33.1</dcm4che.dicom.version>
         <maven.compiler.version>3.14.0</maven.compiler.version>
         <slf4j.version>2.0.17</slf4j.version>
     </properties>
@@ -95,8 +95,8 @@
 
         <!-- DICOM dcm4che -->
         <dependency>
-            <groupId>dcm4che</groupId>
-            <artifactId>dcm4che-core</artifactId>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-net</artifactId>
             <version>${dcm4che.dicom.version}</version>
         </dependency>
 

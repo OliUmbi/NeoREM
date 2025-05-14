@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8009
 
 spring:
   datasource:
@@ -21,3 +21,14 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /docs
+
+dicom:
+  local:
+    aet: NEOREM
+    port: 104
+  remote:
+    aet: MOCK_PACS
+    host: localhost
+    port: 105
+  output:
+    location: data/dicom
