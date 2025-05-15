@@ -44,10 +44,15 @@ services:
             "Enable" : true
           }, 
           "DicomModalities": {
-            "NeoREM": [
-              "NEOREM", 
+            "NEOREM_PROVIDER": [
+              "NEOREM_PROVIDER", 
               "localhost", 
               104
+            ],
+            "NEOREM_CLIENT": [
+              "NEOREM_CLIENT", 
+              "localhost", 
+              103
             ]
           }
         }

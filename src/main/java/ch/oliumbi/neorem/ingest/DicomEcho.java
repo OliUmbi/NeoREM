@@ -16,6 +16,7 @@ public class DicomEcho {
         String remoteAET = "MOCK_PACS";
         String remoteHost = "localhost";
         int remotePort = 105;
+
         String localAET = "NEOREM";
         String localHost = "localhost";
         int localPort = 104;
