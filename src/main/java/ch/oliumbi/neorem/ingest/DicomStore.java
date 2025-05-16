@@ -1,33 +1,26 @@
 package ch.oliumbi.neorem.ingest;
 
-import lombok.SneakyThrows;
 import org.dcm4che3.data.Attributes;
-import org.dcm4che3.data.Tag;
-import org.dcm4che3.data.UID;
-import org.dcm4che3.data.VR;
 import org.dcm4che3.net.*;
-import org.dcm4che3.net.pdu.AAssociateRQ;
 import org.dcm4che3.net.pdu.PresentationContext;
 import org.dcm4che3.net.service.BasicCEchoSCP;
 import org.dcm4che3.net.service.BasicCStoreSCP;
 import org.dcm4che3.net.service.DicomServiceRegistry;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class DicomStore {
 
-    @SneakyThrows
     public static void main(String[] args) throws Exception {
         String localAET = "NEOREM_PROVIDER";
         String localHost = "localhost";
         int localPort = 104;
 
         Connection localConnection = new Connection("NEOREM_PROVIDER", localHost, localPort);
-        localConnection.setBindAddress("0.0.0.0");
+        localConnection.setBindAddress("localhost");
         localConnection.setMaxOpsInvoked(0);
         localConnection.setMaxOpsPerformed(0);
 

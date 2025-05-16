@@ -46,13 +46,15 @@ services:
           "DicomModalities": {
             "NEOREM_PROVIDER": [
               "NEOREM_PROVIDER", 
-              "localhost", 
+              "host.docker.internal", 
               104
             ],
             "NEOREM_CLIENT": [
               "NEOREM_CLIENT", 
-              "localhost", 
+              "host.docker.internal", 
               103
             ]
           }
         }
+    extra_hosts: # <--- ADD THIS SECTION
+      - "host.docker.internal:host-gateway"

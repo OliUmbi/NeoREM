@@ -95,7 +95,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- DICOM dcm4che -->
+        <!-- DICOM Net -->
         <dependency>
             <groupId>org.dcm4che</groupId>
             <artifactId>dcm4che-net</artifactId>

@@ -16,25 +16,23 @@ public class DicomFind {
         String remoteHost = "localhost";
         int remotePort = 105;
 
-        String localAET = "NEOREM";
-        String localHost = "localhost";
-        int localPort = 104;
+        String localAET = "NEOREM_CLIENT";
 
-        Connection localConnection = new Connection("NeoREM", localHost, localPort);
+        Connection localConnection = new Connection();
         Connection remoteConnection = new Connection("Mock Pacs", remoteHost, remotePort);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
         TransferCapability transferCapability = new TransferCapability(
-                "NeoREM",
+                "NEOREM_CLIENT",
                 UID.StudyRootQueryRetrieveInformationModelFind,
                 TransferCapability.Role.SCU,
                 UID.ImplicitVRLittleEndian);
 
         ApplicationEntity applicationEntity = new ApplicationEntity(localAET);
 
-        Device device = new Device("NeoREM");
+        Device device = new Device("NEOREM_CLIENT");
         device.addApplicationEntity(applicationEntity);
         device.addConnection(localConnection);
         device.setExecutor(executorService);
@@ -56,7 +54,6 @@ public class DicomFind {
                 UID.ImplicitVRLittleEndian));
 
         Association association = applicationEntity.connect(remoteConnection, aAssociateRQ);
-
 
         Calendar calStart = Calendar.getInstance();
         calStart.set(2006, Calendar.JANUARY, 1, 0, 0, 0);
@@ -115,6 +112,7 @@ public class DicomFind {
 
         while (dimseRSP.next()) {
             Attributes command = dimseRSP.getCommand();
+            System.out.println("!!!!!!!!!!!!!:" + command);
             Attributes dataset = dimseRSP.getDataset();
             System.out.println("QueryRetrieveLevel: " + dataset.getString(Tag.QueryRetrieveLevel));
             System.out.println("StudyInstanceUID: " + dataset.getString(Tag.StudyInstanceUID));
