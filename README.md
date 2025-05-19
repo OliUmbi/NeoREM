@@ -40,14 +40,110 @@ modalities:
 - CT
 
 fields:
--
+- ScanLength
+- KVP
+- XRayTubeCurrentInuA
+- SeriesDescription
+- AcquisitionType
+- ExposureTime
+- SingleCollimationWidth
+- TotalCollimationWidth
+- SpiralPitchFactor
+- CTDIvol
+- AcquisitionDateTime
+- TotalNumberOfExposures
+- CommentsOnRadiationDose
+- CommentsOnRadiationDose
+- StudyDescription
+- StationName
+- Manufacturer
+- ManufacturerModelName
+- Manufacturer
+- InstitutionName
+- InstitutionAddress
+- StationName
+- InstitutionalDepartmentName
+- ManufacturerModelName
+- DeviceSerialNumber
+- SoftwareVersions
+- GantryID
+- SpatialResolution
+- DateOfLastCalibration
+- TimeOfLastCalibration
+- PatientAge
+- PatientWeight
+- StudyInstanceUID
+- StudyDate
+- StudyTime
+- RequestingPhysician
+- StudyID
+- AccessionNumber
+- ProtocolName
+- OperatorsName
+- RequestedProcedureDescription
+- ScheduledProtocolCodeSequence
+- ManufacturerModelName
+- ManufacturerModelName
 
 ### Fluro
 modalities
 - MG
 
 fields:
--
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
 
 ### Mammo
 modalities
@@ -119,7 +215,107 @@ modalities
 - PX
 
 fields:
--
+- FilterType
+- FilterMaterial
+- FilterThicknessMinimum
+- FilterThicknessMaximum
+- KVP
+- ExposureInuAs
+- Exposure
+- ExposureIndex
+- RelativeXRayExposure
+- Sensitivity
+- TargetExposureIndex
+- DeviationIndex
+- XRayTubeCurrent
+- AverageXRayTubeCurrent
+- ExposureTime
+- FocalSpots
+- FieldOfViewDimensions
+- ExposureControlMode
+- Grid
+- GridAbsorbingMaterial
+- GridSpacingMaterial
+- GridThickness
+- GridPitch
+- GridAspectRatio
+- GridPeriod
+- GridFocalDistance
+- DistanceSourceToDetector
+- DistanceSourceToPatient
+- DistanceSourceToIsocenter
+- TableHeight
+- EstimatedRadiographicMagnificationFactor
+- PositionerPrimaryAngle
+- PositionerSecondaryAngle
+- ColumnAngulation
+- TableHeadTiltAngle
+- TableHorizontalRotationAngle
+- TableCradleTiltAngle
+- SOPInstanceUID
+- AcquisitionTime
+- ContentTime
+- StudyTime
+- AcquisitionDate
+- ContentDate
+- StudyDate
+- ProtocolName
+- Manufacturer
+- SoftwareVersions
+- ImageComments
+- SeriesDescription
+- PerformedProtocolCodeSequence
+- SeriesDescription
+- ImageLaterality
+- ViewCodeSequence
+- ViewPosition
+- EntranceDoseInmGy
+- CommentsOnRadiationDose
+- ExposureControlModeDescription
+- ImageAndFluoroscopyAreaDoseProduct
+- Manufacturer
+- InstitutionName
+- InstitutionAddress
+- StationName
+- InstitutionalDepartmentName
+- ManufacturerModelName
+- DeviceSerialNumber
+- SoftwareVersions
+- GantryID
+- SpatialResolution
+- DateOfLastCalibration
+- TimeOfLastCalibration
+- PatientAge
+- PatientWeight
+- PatientSize
+- ReferringPhysicianName
+- StudyID
+- AccessionNumber
+- StudyDescription
+- SeriesDescription
+- ProcedureCodeSequence
+- Modality
+- PhysiciansOfRecord
+- NameOfPhysiciansReadingStudy
+- PerformingPhysicianName
+- OperatorsName
+- ProcedureCodeSequence
+- ProtocolName
+- StudyDescription
+- SeriesDescription
+- RequestedProcedureCodeSequence
+- RequestedProcedureCodeSequence
+- RequestAttributesSequence
+- ProcedureCodeSequence
+- PerformedProtocolCodeSequence
+- RequestAttributesSequence
+- ProcedureCodeSequence
+- PerformedProtocolCodeSequence
+- Manufacturer
+- ManufacturerModelName
+- StudyInstanceUID
+- StudyDate
+- StudyTime
 
 ### NM/PET
 modalities
