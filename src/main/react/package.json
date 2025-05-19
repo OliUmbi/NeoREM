@@ -1,22 +1,25 @@
 {
-  "name": "NeoREM",
+  "name": "neorem",
   "version": "0.1.0",
   "type": "module",
   "private": false,
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "build": "vite build"
   },
   "dependencies": {
+    "@carbon/icons-react": "^11.60.0",
+    "@carbon/react": "^1.82.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.5.3"
+    "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.4.1",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "vite": "^6.3.3",
-    "typescript": "^5.8.3"
+    "sass": "^1.89.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
   }
 }
