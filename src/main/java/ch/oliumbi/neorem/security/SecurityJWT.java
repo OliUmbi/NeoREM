@@ -1,6 +1,7 @@
 package ch.oliumbi.neorem.security;
 
 import ch.oliumbi.neorem.entities.User;
+import ch.oliumbi.neorem.properties.SecurityProperties;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -17,18 +18,18 @@ import java.util.UUID;
 @Component
 public class SecurityJWT {
 
-    // todo move
-    private String secret = "aksdjhflkasdjhflaskdjfhlasdkfjhs";
-    private long expiration = 3600000;
+    private final SecurityProperties securityProperties;
 
     private Algorithm algorithm;
     private JWTVerifier verifier;
 
+    public SecurityJWT(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
+
     @PostConstruct
     public void initialize() {
-        // todo check for small secrets
-
-        algorithm = Algorithm.HMAC256(secret);
+        algorithm = Algorithm.HMAC256(securityProperties.getJwt().getSecret());
         verifier = JWT.require(algorithm).build();
     }
 
@@ -41,7 +42,7 @@ public class SecurityJWT {
             String token = JWT.create()
                     .withSubject(user.getId().toString())
                     .withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + securityProperties.getJwt().getExpiration()))
                     .withClaim("name", user.getName())
                     .withArrayClaim("roles", roles)
                     .sign(algorithm);

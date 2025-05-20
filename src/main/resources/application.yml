@@ -22,6 +22,11 @@ springdoc:
   swagger-ui:
     path: /documentation
 
+security:
+  jwt:
+    secret: development
+    expiration: 3600000
+
 dicom:
   local:
     aet: NEOREM
