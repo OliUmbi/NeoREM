@@ -3,7 +3,8 @@ CREATE TABLE users (
     name        TEXT    NOT NULL,
     password    TEXT    NOT NULL,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE (name)
 );
 
 CREATE TABLE users_roles (
