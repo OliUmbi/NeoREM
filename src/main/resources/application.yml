@@ -1,5 +1,5 @@
 server:
-  port: 8009
+  port: 8000
 
 spring:
   datasource:
@@ -14,7 +14,7 @@ spring:
     ddl-auto: update
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: classpath:database/migrations
 
 springdoc:
   api-docs:
