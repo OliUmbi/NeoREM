@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8009
 
 spring:
   datasource:
@@ -24,7 +24,7 @@ springdoc:
 
 security:
   jwt:
-    secret: development
+    secret: replace_with_random_32_characters
     expiration: 3600000
 
 dicom:

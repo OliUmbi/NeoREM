@@ -3,6 +3,7 @@ package ch.oliumbi.neorem.controllers;
 import ch.oliumbi.neorem.services.AuthenticationService;
 import lombok.*;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("authenticate")
-    public String authenticate(AuthenticateRequest authenticateRequest) {
+    public String authenticate(@RequestBody AuthenticateRequest authenticateRequest) {
         return authenticationService.authenticate(authenticateRequest.name, authenticateRequest.password);
     }
 

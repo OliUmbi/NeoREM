@@ -1,5 +1,6 @@
 package ch.oliumbi.neorem.security;
 
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -29,9 +30,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/documentation/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/authentication/authenticate").permitAll()
-                                .anyRequest().authenticated()
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        .requestMatchers("/documentation/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/authentication/authenticate").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, AuthenticationFilter.class)
                 .build();
