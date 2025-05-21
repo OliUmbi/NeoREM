@@ -22,9 +22,15 @@ mvn spring-boot:run -Dmaven.wagon.http.ssl.insecure=true
 ### Features
 - [ ] Dicom import
 - [ ] HL7 import
-- [ ] user interface
 - [ ] csv export
 - [ ] xlsx export
+- [ ] study querying
+- [ ] task management
+- [ ] indicators
+- [ ] mappings
+- [ ] messaging
+- [ ] user management
+- [ ] configuration
 
 ## OpenREN Import
 

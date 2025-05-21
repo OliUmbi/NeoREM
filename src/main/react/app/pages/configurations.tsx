@@ -1,10 +1,10 @@
 import {Column, Grid, Heading, Row, Section, Stack, Switch, Toggle} from "@carbon/react";
 
-const Settings = () => {
+const Configurations = () => {
 
     return (
         <Stack gap={8}>
-            <Heading>Settings</Heading>
+            <Heading>Configurations</Heading>
             <Section>
                 <Stack gap={4}>
                     <Heading>Security</Heading>
@@ -24,4 +24,4 @@ const Settings = () => {
     )
 }
 
-export default Settings
+export default Configurations

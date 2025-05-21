@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/home";
 import Studies from "./pages/studies";
-import Settings from "./pages/settings";
+import Configurations from "./pages/configurations";
 import Login from "./pages/login";
 import NotFound from "./pages/not-found";
 import Layout from "./components/layout";
@@ -12,6 +12,7 @@ import Mappings from "./pages/mappings";
 import Indicators from "./pages/indicators";
 import Messages from "./pages/messages";
 import Users from "./pages/users";
+import User from "./pages/user";
 
 const App = () => {
 
@@ -30,7 +31,8 @@ const App = () => {
                       <Route path="/indicators" Component={Indicators} />
                       <Route path="/messages" Component={Messages} />
                       <Route path="/users" Component={Users} />
-                      <Route path="/settings" Component={Settings} />
+                      <Route path="/configurations" Component={Configurations} />
+                      <Route path="/user" Component={User} />
                   </Route>
               </Routes>
           </BrowserRouter>

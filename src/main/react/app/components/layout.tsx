@@ -8,9 +8,9 @@ import {
     HeaderGlobalBar, HeaderMenu, HeaderMenuButton,
     HeaderMenuItem,
     HeaderName,
-    HeaderNavigation, HeaderSideNavItems, SideNav, SideNavItems
+    HeaderNavigation, HeaderSideNavItems, Heading, SideNav, SideNavItems, Stack
 } from "@carbon/react";
-import {Chat, Settings, UserMultiple} from "@carbon/icons-react";
+import {Book, Chat, Settings, User, UserMultiple} from "@carbon/icons-react";
 
 const Layout = () => {
     const authentication = useAuthentication();
@@ -27,23 +27,23 @@ const Layout = () => {
                         isActive={isSideNavExpanded}
                         aria-expanded={isSideNavExpanded}
                     />
-                    <HeaderName prefix="KSA" as={Link} to="/">OpenREM</HeaderName>
+                    <HeaderName prefix="KSA" as={Link} to="/">NeoREM</HeaderName>
                     <HeaderNavigation>
                         <HeaderMenuItem as={Link} to="/studies">Studies</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/imports">Imports</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/exports">Exports</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/mappings">Mappings</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/indicators">Indicators</HeaderMenuItem>
+                        <HeaderMenuItem as={Link} to="/messages">Messages</HeaderMenuItem>
+                        <HeaderMenuItem as={Link} to="/users">Users</HeaderMenuItem>
+                        <HeaderMenuItem as={Link} to="/configurations">Configurations</HeaderMenuItem>
                     </HeaderNavigation>
                     <HeaderGlobalBar>
-                        <HeaderGlobalAction onClick={() => navigate("/messages")} aria-label="Messages">
-                            <Chat/>
+                        <HeaderGlobalAction onClick={() => navigate("/documentation")} aria-label="Documenation">
+                            <Book/>
                         </HeaderGlobalAction>
-                        <HeaderGlobalAction onClick={() => navigate("/users")} aria-label="Users">
-                            <UserMultiple/>
-                        </HeaderGlobalAction>
-                        <HeaderGlobalAction onClick={() => navigate("/settings")} aria-label="Settings">
-                            <Settings/>
+                        <HeaderGlobalAction onClick={() => navigate("/user")} aria-label="User">
+                            <User/>
                         </HeaderGlobalAction>
                     </HeaderGlobalBar>
                     <SideNav
@@ -53,9 +53,14 @@ const Layout = () => {
                         onSideNavBlur={onClickSideNavExpand}>
                         <SideNavItems>
                             <HeaderSideNavItems>
-                                <HeaderMenuItem as={Link} to="/" onClick={onClickSideNavExpand}>Home</HeaderMenuItem>
-                                <HeaderMenuItem as={Link} to="/studies"
-                                                onClick={onClickSideNavExpand}>Studies</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/studies">Studies</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/imports">Imports</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/exports">Exports</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/mappings">Mappings</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/indicators">Indicators</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/messages">Messages</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/users">Users</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/configurations">Configurations</HeaderMenuItem>
                             </HeaderSideNavItems>
                         </SideNavItems>
                     </SideNav>
