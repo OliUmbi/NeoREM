@@ -20,8 +20,8 @@ public class Study {
     private Integer pregnancyStatus;
     private String studyInstanceUID;
     private String accessionNumber;
-    private LocalDate studyDate;
-    private LocalTime studyTime;
+    private String studyDate;
+    private String studyTime;
     private String studyDescription;
     private String referringPhysicianName;
     private String requestingPhysician;
@@ -29,5 +29,5 @@ public class Study {
     private String institutionalDepartmentName;
     private String stationName;
 
-    private Set<Series> series;
+    private Set<Instance> instances;
 }

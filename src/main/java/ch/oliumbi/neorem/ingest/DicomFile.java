@@ -25,7 +25,7 @@ public class DicomFile {
 
     public static void main(String[] args) throws Exception {
 
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 18; i++) {
             try (InputStream inputStream = DicomFile.class.getResourceAsStream("/test-" + i + ".dcm");
                  DicomInputStream dicomInputStream = new DicomInputStream(inputStream)) {
 
@@ -42,8 +42,8 @@ public class DicomFile {
                 study.setPregnancyStatus(attributes.getInt(Tag.PregnancyStatus, -1)); // todo review getting ints
                 study.setStudyInstanceUID(attributes.getString(Tag.StudyInstanceUID));
                 study.setAccessionNumber(attributes.getString(Tag.AccessionNumber));
-                study.setStudyDate(LocalDate.parse(attributes.getString(Tag.StudyDate), dateFormatter));
-                study.setStudyTime(LocalTime.parse(attributes.getString(Tag.StudyTime), timeFormatter));
+                study.setStudyDate(attributes.getString(Tag.StudyDate));
+                study.setStudyTime(attributes.getString(Tag.StudyTime));
                 study.setStudyDescription(attributes.getString(Tag.StudyDescription));
                 study.setReferringPhysicianName(attributes.getString(Tag.ReferringPhysicianName));
                 study.setRequestingPhysician(attributes.getString(Tag.RequestingPhysician));
@@ -54,8 +54,8 @@ public class DicomFile {
                 Series series = new Series();
                 series.setSeriesInstanceUID(attributes.getString(Tag.SeriesInstanceUID));
                 series.setSeriesNumber(attributes.getInt(Tag.SeriesNumber, 0)); // todo review ints
-                series.setSeriesDate(LocalDate.parse(attributes.getString(Tag.SeriesDate), dateFormatter));
-                series.setSeriesTime(LocalTime.parse(attributes.getString(Tag.SeriesTime), timePrecisionFormatter));
+                series.setSeriesDate(attributes.getString(Tag.SeriesDate));
+                series.setSeriesTime(attributes.getString(Tag.SeriesTime));
                 series.setSeriesDescription(attributes.getString(Tag.SeriesDescription));
                 series.setModality(attributes.getString(Tag.Modality));
                 series.setBodyPartExamined(attributes.getString(Tag.BodyPartExamined));
@@ -69,8 +69,8 @@ public class DicomFile {
                 instance.setSopClassUID(attributes.getString(Tag.SOPClassUID));
                 instance.setSopInstanceUID(attributes.getString(Tag.SOPInstanceUID));
                 instance.setInstanceNumber(attributes.getInt(Tag.InstanceNumber, 0)); // todo review ints
-                instance.setContentDate(LocalDate.parse(attributes.getString(Tag.ContentDate), dateFormatter));
-                instance.setContentTime(LocalTime.parse(attributes.getString(Tag.ContentTime), timePrecisionFormatter));
+                instance.setContentDate(attributes.getString(Tag.ContentDate));
+                instance.setContentTime(attributes.getString(Tag.ContentTime));
                 instance.setModality(attributes.getString(Tag.Modality));
                 instance.setSeriesDescription(attributes.getString(Tag.SeriesDescription));
 

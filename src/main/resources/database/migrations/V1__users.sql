@@ -12,5 +12,5 @@ CREATE TABLE users_roles (
     role        TEXT    NOT NULL,
 
     PRIMARY KEY (users_id, role),
-    FOREIGN KEY (users_id) REFERENCES users (id)
+    FOREIGN KEY (users_id)  REFERENCES users (id)
 );

@@ -20,8 +20,8 @@ public class Instance {
     private String sopClassUID;
     private String sopInstanceUID;
     private int instanceNumber;
-    private LocalDate contentDate;
-    private LocalTime contentTime;
+    private String contentDate;
+    private String contentTime;
     private String modality;
     private String seriesDescription;
 
