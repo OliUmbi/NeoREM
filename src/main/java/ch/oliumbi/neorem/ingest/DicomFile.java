@@ -25,7 +25,7 @@ public class DicomFile {
 
     public static void main(String[] args) throws Exception {
 
-        for (int i = 1; i <= 18; i++) {
+        for (int i = 1; i <= 20; i++) {
             try (InputStream inputStream = DicomFile.class.getResourceAsStream("/test-" + i + ".dcm");
                  DicomInputStream dicomInputStream = new DicomInputStream(inputStream)) {
 
@@ -50,20 +50,6 @@ public class DicomFile {
                 study.setInstitutionName(attributes.getString(Tag.InstitutionName));
                 study.setInstitutionalDepartmentName(attributes.getString(Tag.InstitutionalDepartmentName));
                 study.setStationName(attributes.getString(Tag.StationName));
-
-                Series series = new Series();
-                series.setSeriesInstanceUID(attributes.getString(Tag.SeriesInstanceUID));
-                series.setSeriesNumber(attributes.getInt(Tag.SeriesNumber, 0)); // todo review ints
-                series.setSeriesDate(attributes.getString(Tag.SeriesDate));
-                series.setSeriesTime(attributes.getString(Tag.SeriesTime));
-                series.setSeriesDescription(attributes.getString(Tag.SeriesDescription));
-                series.setModality(attributes.getString(Tag.Modality));
-                series.setBodyPartExamined(attributes.getString(Tag.BodyPartExamined));
-                series.setProtocolName(attributes.getString(Tag.ProtocolName));
-                series.setManufacturer(attributes.getString(Tag.Manufacturer));
-                series.setManufacturerModelName(attributes.getString(Tag.ManufacturerModelName));
-                series.setDeviceSerialNumber(attributes.getString(Tag.DeviceSerialNumber));
-                series.setSoftwareVersions(attributes.getString(Tag.SoftwareVersions));
 
                 Instance instance = new Instance();
                 instance.setSopClassUID(attributes.getString(Tag.SOPClassUID));
