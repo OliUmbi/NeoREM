@@ -1,12 +1,10 @@
-package ch.oliumbi.neorem.ingest;
+package ch.oliumbi.neorem.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,13 +15,14 @@ import java.util.UUID;
 public class Instance {
 
     private UUID id;
-    private String sopClassUID;
-    private String sopInstanceUID;
-    private int instanceNumber;
-    private String contentDate;
-    private String contentTime;
+    private UUID studiesId;
     private String modality;
-    private String seriesDescription;
+    private String seriesId;
+    private String instanceId;
+    private String date;
+    private String description;
+    private String protocol;
+    private String comment;
 
     private Set<Item> items;
 }

@@ -1,4 +1,4 @@
-package ch.oliumbi.neorem.ingest;
+package ch.oliumbi.neorem.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

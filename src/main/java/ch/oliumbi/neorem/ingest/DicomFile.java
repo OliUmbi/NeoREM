@@ -7,14 +7,12 @@ import org.dcm4che3.data.Tag;
 import org.dcm4che3.io.DicomInputStream;
 import org.dcm4che3.util.TagUtils;
 
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class DicomFile {
 
@@ -25,6 +23,30 @@ public class DicomFile {
 
     public static void main(String[] args) throws Exception {
 
+        URL resource = DicomFile.class.getResource("/ct");
+
+        for (File file : Paths.get(resource.toURI()).toFile().listFiles()) {
+
+            System.out.println("──────── start " + file.getName() + "────────");
+
+            DicomInputStream dicomInputStream = new DicomInputStream(file);
+
+            Attributes attributes = dicomInputStream.readDataset();
+
+            Sequence sequence = attributes.getSequence(Tag.ContentSequence);
+
+            List<DicomStructuredReport> dicomStructuredReports = contentSequence(sequence);
+
+            System.out.println(dicomStructuredReports);
+
+            List<List<Object>> entries = parse(attributes);
+
+            print(entries, 0);
+
+            System.out.println("──────── end " + file.getName() + "────────");
+        }
+
+        /*
         for (int i = 1; i <= 20; i++) {
             try (InputStream inputStream = DicomFile.class.getResourceAsStream("/test-" + i + ".dcm");
                  DicomInputStream dicomInputStream = new DicomInputStream(inputStream)) {
@@ -69,6 +91,63 @@ public class DicomFile {
                 System.out.println("─────────────────────────────────────────────");
             }
         }
+         */
+    }
+
+    public static List<DicomStructuredReport> contentSequence(Sequence sequence) throws Exception {
+        List<DicomStructuredReport> dicomStructuredReports = new ArrayList<>();
+
+        for (Attributes attributes : sequence) {
+            DicomStructuredReport dicomStructuredReport = new DicomStructuredReport();
+            dicomStructuredReport.setRelationship(attributes.getString(Tag.RelationshipType));
+            dicomStructuredReport.setType(attributes.getString(Tag.ValueType));
+
+            Attributes conceptNameCode = attributes.getNestedDataset(Tag.ConceptNameCodeSequence);
+            if (conceptNameCode != null) {
+                dicomStructuredReport.setName(conceptNameCode.getString(Tag.CodeMeaning));
+            }
+
+            switch (dicomStructuredReport.getType()) {
+                case "CONTAINER" -> dicomStructuredReport.setValue(attributes.getString(Tag.ContinuityOfContent));
+                case "TEXT" -> dicomStructuredReport.setValue(attributes.getString(Tag.TextValue));
+                case "CODE" -> {
+                    Attributes conceptCode = attributes.getNestedDataset(Tag.ConceptCodeSequence);
+                    if (conceptCode != null) {
+                        dicomStructuredReport.setValue(conceptCode.getString(Tag.CodeMeaning));
+                    }
+                }
+                case "UIDREF" -> dicomStructuredReport.setValue(attributes.getString(Tag.UID));
+                case "DATETIME" -> dicomStructuredReport.setValue(attributes.getString(Tag.DateTime));
+                case "NUM" -> {
+                        Attributes measuredValue = attributes.getNestedDataset(Tag.MeasuredValueSequence);
+
+                        if (measuredValue != null) {
+                            dicomStructuredReport.setValue(measuredValue.getString(Tag.NumericValue));
+                            dicomStructuredReport.setFloatingPoint(measuredValue.getString(Tag.FloatingPointValue));
+                            dicomStructuredReport.setNumerator(measuredValue.getString(Tag.RationalNumeratorValue));
+                            dicomStructuredReport.setDenominator(measuredValue.getString(Tag.RationalDenominatorValue));
+
+                            Attributes measurementUnitsCode = measuredValue.getNestedDataset(Tag.MeasurementUnitsCodeSequence);
+
+                            if (measurementUnitsCode != null) {
+                                dicomStructuredReport.setUnit(measurementUnitsCode.getString(Tag.CodeMeaning));
+                            }
+
+                        }
+                }
+                default -> System.out.println("!!! error " + attributes);
+            }
+
+
+            Sequence children = attributes.getSequence(Tag.ContentSequence);
+            if (children != null) {
+                dicomStructuredReport.setChildren(contentSequence(children));
+            }
+
+            dicomStructuredReports.add(dicomStructuredReport);
+        }
+
+        return dicomStructuredReports;
     }
 
     public static List<List<Object>> parse(Attributes attributes) throws Exception {
@@ -128,7 +207,7 @@ public class DicomFile {
 
             String prefix = "";
             for (int i = 0; i < level; i++) {
-                prefix += "   ";
+                prefix += "│  ";
             }
 
             if (value instanceof List<?> children) {

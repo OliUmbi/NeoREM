@@ -1,4 +1,4 @@
-package ch.oliumbi.neorem.ingest;
+package ch.oliumbi.neorem.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +15,9 @@ import java.util.UUID;
 public class Patient {
 
     private UUID id;
-    private String patientID;
-    private String issuerOfPatientID;
-    private String patientSex;
+    private String externalId;
+    private String externalIssuer;
+    private String sex;
 
     private Set<Study> studies;
 }

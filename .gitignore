@@ -2,6 +2,7 @@
 target
 node_modules
 build
-*.dcm
 *.db
 *.iml
+# todo remove
+**/backup

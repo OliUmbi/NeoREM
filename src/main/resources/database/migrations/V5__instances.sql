@@ -7,37 +7,34 @@ CREATE TABLE instances (
     date         TEXT  NULL,
     description  TEXT  NULL,
     protocol     TEXT  NULL,
-    body_part    TEXT  NULL,
-    comment      TEXT  NULL,  -- todo positional order possible
+    comment      TEXT  NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (studies_id)    REFERENCES studies (id),
+    FOREIGN KEY (studies_id) REFERENCES studies (id),
     UNIQUE (instance_id)
 );
 
 CREATE TABLE instances_computed_tomographies (
-    id                      BLOB  NOT NULL,
     instances_id            BLOB  NOT NULL,
-    type                    TEXT  NULL, -- todo candidate for default table
+    type                    TEXT  NULL,
     dose_index_volume       REAL  NULL,
     dose_length_product     REAL  NULL,
     scanning_length         REAL  NULL,
-    voltage_peak            REAL  NULL, -- todo candidate for default table
-    tube_current                  REAL  NULL, -- todo candidate for default table
-    tube_current_max              REAL  NULL, -- todo candidate for default table
+    voltage_peak            REAL  NULL,
+    tube_current            REAL  NULL,
+    tube_current_max        REAL  NULL,
     exposure_time_rotation  REAL  NULL,
     pitch                   REAL  NULL,
-    exposure_time           REAL  NULL, -- todo candidate for default table
+    exposure_time           REAL  NULL,
     slice_thickness         REAL  NULL,
     collimation             REAL  NULL,
     modulation              TEXT  NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
 );
 
 CREATE TABLE instances_mammographies (
-    id                      BLOB  NOT NULL,
     instances_id            BLOB  NOT NULL,
     laterality              TEXT  NULL,
     view                    TEXT  NULL,
@@ -49,7 +46,7 @@ CREATE TABLE instances_mammographies (
     exposure_control_mode   TEXT  NULL,
     exposure_control_mode   TEXT  NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
 );
 
@@ -66,7 +63,6 @@ CREATE TABLE instances_mammographies_filters (
 );
 
 CREATE TABLE instances_fluoroscopies (
-    id                        BLOB  NOT NULL,
     instances_id              BLOB  NOT NULL,
     type                      TEXT  NULL,
     pulse_rate                REAL  NULL,
@@ -83,7 +79,7 @@ CREATE TABLE instances_fluoroscopies (
     source_detector_distance  REAL  NULL,
     orientation               TEXT  NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
 );
 
@@ -99,7 +95,6 @@ CREATE TABLE instances_fluoroscopies_filters (
 );
 
 CREATE TABLE instances_radiographies (
-    id                      BLOB  NOT NULL,
     instances_id            BLOB  NOT NULL,
     anatomical_structure    TEXT  NULL,
     laterality              TEXT  NULL,
@@ -118,7 +113,7 @@ CREATE TABLE instances_radiographies (
     dose_area_product       REAL  NULL,
     exposure_control_mode   TEXT  NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
 );
 
@@ -134,7 +129,6 @@ CREATE TABLE instances_radiographies_filters (
 );
 
 CREATE TABLE instances_nuclear_medicines (
-    id                         BLOB     NOT NULL,
     instances_id               BLOB     NOT NULL,
     radiopharmaceutical_agent  TEXT     NULL,
     radionuclide               TEXT     NULL,
@@ -164,7 +158,7 @@ CREATE TABLE instances_nuclear_medicines (
     measurement_method         TEXT     NULL,
     reference_authority        TEXT     NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
     FOREIGN KEY (associated_computed_tomographies_id) REFERENCES instances (id)
 );

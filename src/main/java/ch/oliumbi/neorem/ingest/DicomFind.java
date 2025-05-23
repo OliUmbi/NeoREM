@@ -1,12 +1,16 @@
 package ch.oliumbi.neorem.ingest;
 
+
 import org.dcm4che3.data.*;
 import org.dcm4che3.net.*;
 import org.dcm4che3.net.pdu.AAssociateRQ;
 import org.dcm4che3.net.pdu.PresentationContext;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class DicomFind {
 
