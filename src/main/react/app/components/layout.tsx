@@ -10,7 +10,7 @@ import {
     HeaderName,
     HeaderNavigation, HeaderSideNavItems, Heading, SideNav, SideNavItems, Stack
 } from "@carbon/react";
-import {Book, Chat, Settings, User, UserMultiple} from "@carbon/icons-react";
+import {Book, Chat, Gears, Settings, User, UserMultiple} from "@carbon/icons-react";
 
 const Layout = () => {
     const authentication = useAuthentication();
@@ -30,17 +30,25 @@ const Layout = () => {
                     <HeaderName prefix="KSA" as={Link} to="/">NeoREM</HeaderName>
                     <HeaderNavigation>
                         <HeaderMenuItem as={Link} to="/studies">Studies</HeaderMenuItem>
+                        <HeaderMenuItem as={Link} to="/devices">Devices</HeaderMenuItem>
+                        <HeaderMenuItem as={Link} to="/patients">Patients</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/imports">Imports</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/exports">Exports</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/mappings">Mappings</HeaderMenuItem>
                         <HeaderMenuItem as={Link} to="/indicators">Indicators</HeaderMenuItem>
-                        <HeaderMenuItem as={Link} to="/messages">Messages</HeaderMenuItem>
-                        <HeaderMenuItem as={Link} to="/users">Users</HeaderMenuItem>
-                        <HeaderMenuItem as={Link} to="/configurations">Configurations</HeaderMenuItem>
                     </HeaderNavigation>
                     <HeaderGlobalBar>
                         <HeaderGlobalAction onClick={() => navigate("/documentation")} aria-label="Documenation">
                             <Book/>
+                        </HeaderGlobalAction>
+                        <HeaderGlobalAction onClick={() => navigate("/messages")} aria-label="Messages">
+                            <Chat/>
+                        </HeaderGlobalAction>
+                        <HeaderGlobalAction onClick={() => navigate("/users")} aria-label="users">
+                            <UserMultiple/>
+                        </HeaderGlobalAction>
+                        <HeaderGlobalAction onClick={() => navigate("/configurations")} aria-label="Configurations">
+                            <Settings/>
                         </HeaderGlobalAction>
                         <HeaderGlobalAction onClick={() => navigate("/user")} aria-label="User">
                             <User/>
@@ -54,27 +62,28 @@ const Layout = () => {
                         <SideNavItems>
                             <HeaderSideNavItems>
                                 <HeaderMenuItem as={Link} to="/studies">Studies</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/devices">Devices</HeaderMenuItem>
+                                <HeaderMenuItem as={Link} to="/patients">Patients</HeaderMenuItem>
                                 <HeaderMenuItem as={Link} to="/imports">Imports</HeaderMenuItem>
                                 <HeaderMenuItem as={Link} to="/exports">Exports</HeaderMenuItem>
                                 <HeaderMenuItem as={Link} to="/mappings">Mappings</HeaderMenuItem>
                                 <HeaderMenuItem as={Link} to="/indicators">Indicators</HeaderMenuItem>
-                                <HeaderMenuItem as={Link} to="/messages">Messages</HeaderMenuItem>
-                                <HeaderMenuItem as={Link} to="/users">Users</HeaderMenuItem>
-                                <HeaderMenuItem as={Link} to="/configurations">Configurations</HeaderMenuItem>
                             </HeaderSideNavItems>
                         </SideNavItems>
                     </SideNav>
                 </Header>
                 <Content>
-                    <Breadcrumb>
-                        {location.pathname.split("/").map((path, index) => index > 0 ? (
-                                <BreadcrumbItem key={path}>
-                                    <Link to={path}>{path}</Link>
-                                </BreadcrumbItem>
-                            ) : null
-                        )}
-                    </Breadcrumb>
-                    <Outlet/>
+                    <Stack gap={8}>
+                        <Breadcrumb>
+                            {location.pathname.split("/").map((path, index) => index > 0 ? (
+                                    <BreadcrumbItem key={path}>
+                                        <Link to={path}>{path}</Link>
+                                    </BreadcrumbItem>
+                                ) : null
+                            )}
+                        </Breadcrumb>
+                        <Outlet/>
+                    </Stack>
                 </Content>
             </>
         )}/> : <Navigate to="/login"/>

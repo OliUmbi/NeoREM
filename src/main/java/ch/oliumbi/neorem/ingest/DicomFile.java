@@ -30,18 +30,14 @@ public class DicomFile {
             System.out.println("──────── start " + file.getName() + "────────");
 
             DicomInputStream dicomInputStream = new DicomInputStream(file);
-
             Attributes attributes = dicomInputStream.readDataset();
 
             Sequence sequence = attributes.getSequence(Tag.ContentSequence);
-
             List<DicomStructuredReport> dicomStructuredReports = contentSequence(sequence);
-
             System.out.println(dicomStructuredReports);
 
-            List<List<Object>> entries = parse(attributes);
-
-            print(entries, 0);
+            // List<List<Object>> entries = parse(attributes);
+            // print(entries, 0);
 
             System.out.println("──────── end " + file.getName() + "────────");
         }
@@ -95,6 +91,10 @@ public class DicomFile {
     }
 
     public static List<DicomStructuredReport> contentSequence(Sequence sequence) throws Exception {
+        if (sequence == null) {
+            return null;
+        }
+
         List<DicomStructuredReport> dicomStructuredReports = new ArrayList<>();
 
         for (Attributes attributes : sequence) {
@@ -110,6 +110,7 @@ public class DicomFile {
             switch (dicomStructuredReport.getType()) {
                 case "CONTAINER" -> dicomStructuredReport.setValue(attributes.getString(Tag.ContinuityOfContent));
                 case "TEXT" -> dicomStructuredReport.setValue(attributes.getString(Tag.TextValue));
+                case "PERSON NAME", "PNAME" -> dicomStructuredReport.setValue(attributes.getString(Tag.PersonName));
                 case "CODE" -> {
                     Attributes conceptCode = attributes.getNestedDataset(Tag.ConceptCodeSequence);
                     if (conceptCode != null) {
@@ -135,14 +136,13 @@ public class DicomFile {
 
                         }
                 }
-                default -> System.out.println("!!! error " + attributes);
+                default -> {
+                    System.out.println("!!! error " + attributes);
+                }
             }
 
-
-            Sequence children = attributes.getSequence(Tag.ContentSequence);
-            if (children != null) {
-                dicomStructuredReport.setChildren(contentSequence(children));
-            }
+            List<DicomStructuredReport> children = contentSequence(attributes.getSequence(Tag.ContentSequence));
+            dicomStructuredReport.setChildren(children);
 
             dicomStructuredReports.add(dicomStructuredReport);
         }

@@ -5,7 +5,15 @@ import {
     TableRow,
     TableHeader,
     TableBody,
-    TableCell, Heading, Stack, Grid, Column, Pagination,
+    TableCell,
+    Column,
+    Pagination,
+    DatePicker,
+    DatePickerInput,
+    FlexGrid,
+    Row,
+    Stack,
+    Grid
 } from "@carbon/react";
 import {useState} from "react";
 
@@ -314,13 +322,59 @@ const Studies = () => {
     ]
 
     return (
-        <div className="studies">
-            <div className="studies-filters">
-
-            </div>
-            <div className="studies-table">
+        <Stack gap={8}>
+            <Stack gap={4}>
+                <DatePicker
+                    datePickerType="single"
+                    onChange={() => {
+                    }}
+                    onClose={() => {
+                    }}
+                    onOpen={() => {
+                    }}>
+                    <DatePickerInput
+                        id="studies-from"
+                        labelText="From"
+                        onChange={() => {
+                        }}
+                        onClose={() => {
+                        }}
+                        onOpen={() => {
+                        }}
+                        placeholder="yyyy.mm.dd"
+                    />
+                </DatePicker>
+                <DatePicker
+                    datePickerType="single"
+                    onChange={() => {
+                    }}
+                    onClose={() => {
+                    }}
+                    onOpen={() => {
+                    }}>
+                    <DatePickerInput
+                        id="studies-to"
+                        labelText="To"
+                        onChange={() => {
+                        }}
+                        onClose={() => {
+                        }}
+                        onOpen={() => {
+                        }}
+                        placeholder="yyyy.mm.dd"
+                    />
+                </DatePicker>
+            </Stack>
+            <div>
+                <Pagination
+                    page={page}
+                    pageSize={10}
+                    pageSizes={[10, 20, 30, 40, 50]}
+                    totalItems={100}
+                    onChange={({page}) => setPage(page)}
+                />
                 {/* @ts-ignore */}
-                <DataTable rows={rows} headers={headers} isSortable={true}>
+                <DataTable rows={rows} headers={headers} isSortable={true} size="lg">
                     {({rows, headers, getTableProps, getHeaderProps, getRowProps}) => (
                         <Table {...getTableProps()}>
                             <TableHead>
@@ -352,7 +406,7 @@ const Studies = () => {
                     onChange={({page}) => setPage(page)}
                 />
             </div>
-        </div>
+        </Stack>
     )
 }
 
