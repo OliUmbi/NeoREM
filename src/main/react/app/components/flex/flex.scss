@@ -1,0 +1,133 @@
+@use "@carbon/grid";
+
+.flex {
+  display: flex;
+
+  @mixin flex__style($name) {
+    &[data-#{$name}-width="full"] {
+      width: 100%;
+    }
+
+    &[data-#{$name}-width="fit"] {
+      width: fit-content;
+    }
+
+    &[data-#{$name}-height="full"] {
+      height: 100%;
+    }
+
+    &[data-#{$name}-height="fit"] {
+      height: fit-content;
+    }
+
+    &[data-#{$name}-direction="row"] {
+      flex-direction: row;
+    }
+
+    &[data-#{$name}-direction="column"] {
+      flex-direction: column;
+    }
+
+    &[data-#{$name}-align="start"] {
+      align-items: flex-start;
+    }
+
+    &[data-#{$name}-align="center"] {
+      align-items: center;
+    }
+
+    &[data-#{$name}-align="end"] {
+      align-items: flex-end;
+    }
+
+    &[data-#{$name}-justify="start"] {
+      justify-content: flex-start;
+    }
+
+    &[data-#{$name}-justify="center"] {
+      justify-content: center;
+    }
+
+    &[data-#{$name}-justify="end"] {
+      justify-content: flex-end;
+    }
+
+    &[data-#{$name}-justify="between"] {
+      justify-content: space-between;
+    }
+
+    &[data-#{$name}-justify="around"] {
+      justify-content: space-around;
+    }
+
+    &[data-#{$name}-justify="evenly"] {
+      justify-content: space-evenly;
+    }
+
+    &[data-#{$name}-gap="0"] {
+      gap: 0;
+    }
+
+    &[data-#{$name}-gap="0.5"] {
+      gap: 0.5rem;
+    }
+
+    &[data-#{$name}-gap="1"] {
+      gap: 1rem;
+    }
+
+    &[data-#{$name}-gap="2"] {
+      gap: 2rem;
+    }
+
+    &[data-#{$name}-gap="3"] {
+      gap: 3rem;
+    }
+
+    &[data-#{$name}-gap="4"] {
+      gap: 4rem;
+    }
+
+    &[data-#{$name}-gap="5"] {
+      gap: 5rem;
+    }
+
+    &[data-#{$name}-gap="6"] {
+      gap: 6rem;
+    }
+
+    &[data-#{$name}-gap="7"] {
+      gap: 7rem;
+    }
+
+    &[data-#{$name}-gap="8"] {
+      gap: 8rem;
+    }
+
+    &[data-#{$name}-wrap="never"] {
+      flex-wrap: nowrap;
+    }
+
+    &[data-#{$name}-wrap="always"] {
+      flex-wrap: wrap;
+    }
+
+    &[data-#{$name}-wrap="reverse"] {
+      flex-wrap: wrap-reverse;
+    }
+  }
+
+  @include flex__style("xl");
+
+  @include grid.breakpoint-down("lg") {
+    @include flex__style("lg");
+  }
+
+  @include grid.breakpoint-down("md") {
+    @include flex__style("md");
+  }
+
+  @include grid.breakpoint-down("sm") {
+    @include flex__style("sm");
+  }
+}

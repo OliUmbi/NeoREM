@@ -1,5 +1,6 @@
 import {Button, Column, Content, FlexGrid, Grid, Heading, Row, Stack} from "@carbon/react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {ContentText} from "@carbon/react/es/components/PageHeader";
 
 const NotFound = () => {
 
@@ -11,7 +12,7 @@ const NotFound = () => {
             <Stack gap={8}>
                 <Stack gap={4}>
                     <Heading>Not found</Heading>
-                    <p>We could not find the resource {location.pathname}</p>
+                    <ContentText>We could not find the resource {location.pathname}</ContentText>
                 </Stack>
                 <FlexGrid>
                     <Row>

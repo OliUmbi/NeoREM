@@ -1,16 +1,17 @@
-import {useAuthentication} from "../services/authentication";
+import {useAuthentication} from "../../services/authentication";
 import {Link, Navigate, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {
-    Breadcrumb, BreadcrumbItem,
-    Content,
+    Breadcrumb, BreadcrumbItem, Column,
+    Content, FlexGrid, Grid,
     Header, HeaderContainer,
     HeaderGlobalAction,
     HeaderGlobalBar, HeaderMenu, HeaderMenuButton,
     HeaderMenuItem,
     HeaderName,
-    HeaderNavigation, HeaderSideNavItems, Heading, SideNav, SideNavItems, Stack
+    HeaderNavigation, HeaderSideNavItems, Heading, Row, SideNav, SideNavItems, Stack
 } from "@carbon/react";
 import {Book, Chat, Gears, Settings, User, UserMultiple} from "@carbon/icons-react";
+import Flex from "../flex/flex";
 
 const Layout = () => {
     const authentication = useAuthentication();
@@ -73,7 +74,7 @@ const Layout = () => {
                     </SideNav>
                 </Header>
                 <Content>
-                    <Stack gap={8}>
+                    <Flex xl={{direction: "column", width: "full", height: "full", gap: 2}}>
                         <Breadcrumb>
                             {location.pathname.split("/").map((path, index) => index > 0 ? (
                                     <BreadcrumbItem key={path}>
@@ -83,7 +84,7 @@ const Layout = () => {
                             )}
                         </Breadcrumb>
                         <Outlet/>
-                    </Stack>
+                    </Flex>
                 </Content>
             </>
         )}/> : <Navigate to="/login"/>

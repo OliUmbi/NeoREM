@@ -10,12 +10,11 @@ import {
     Pagination,
     DatePicker,
     DatePickerInput,
-    FlexGrid,
     Row,
-    Stack,
-    Grid
+    Form
 } from "@carbon/react";
 import {useState} from "react";
+import Flex from "../components/flex/flex";
 
 const Studies = () => {
 
@@ -322,8 +321,8 @@ const Studies = () => {
     ]
 
     return (
-        <Stack gap={8}>
-            <Stack gap={4}>
+        <Flex xl={{direction: "row", gap: 2}} lg={{direction: "column"}}>
+            <Flex xl={{direction: "column", width: "fit", height: "fit", gap: 1}}>
                 <DatePicker
                     datePickerType="single"
                     onChange={() => {
@@ -364,15 +363,8 @@ const Studies = () => {
                         placeholder="yyyy.mm.dd"
                     />
                 </DatePicker>
-            </Stack>
-            <div>
-                <Pagination
-                    page={page}
-                    pageSize={10}
-                    pageSizes={[10, 20, 30, 40, 50]}
-                    totalItems={100}
-                    onChange={({page}) => setPage(page)}
-                />
+            </Flex>
+            <Flex xl={{direction: "column", width: "full", height: "fit"}}>
                 {/* @ts-ignore */}
                 <DataTable rows={rows} headers={headers} isSortable={true} size="lg">
                     {({rows, headers, getTableProps, getHeaderProps, getRowProps}) => (
@@ -405,8 +397,8 @@ const Studies = () => {
                     totalItems={100}
                     onChange={({page}) => setPage(page)}
                 />
-            </div>
-        </Stack>
+            </Flex>
+        </Flex>
     )
 }
 

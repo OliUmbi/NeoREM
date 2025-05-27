@@ -4,7 +4,7 @@ import Studies from "./pages/studies";
 import Configurations from "./pages/configurations";
 import Login from "./pages/login";
 import NotFound from "./pages/not-found";
-import Layout from "./components/layout";
+import Layout from "./components/layout/layout";
 import {AuthenticationProvider} from "./services/authentication";
 import Imports from "./pages/imports";
 import Exports from "./pages/exports";
