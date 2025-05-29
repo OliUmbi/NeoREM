@@ -19,6 +19,9 @@ mvn clean -Dmaven.wagon.http.ssl.insecure=true
 mvn spring-boot:run -Dmaven.wagon.http.ssl.insecure=true
 ```
 
+### Test files
+https://support.dcmtk.org/redmine/projects/dcmtk/wiki/DICOM_images
+
 ### Features
 - [ ] Dicom import
 - [ ] HL7 import

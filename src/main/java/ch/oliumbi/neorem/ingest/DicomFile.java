@@ -34,60 +34,12 @@ public class DicomFile {
 
             Sequence sequence = attributes.getSequence(Tag.ContentSequence);
             List<DicomStructuredReport> dicomStructuredReports = contentSequence(sequence);
-            System.out.println(dicomStructuredReports);
 
-            // List<List<Object>> entries = parse(attributes);
-            // print(entries, 0);
+            List<List<Object>> entries = parse(attributes);
+            print(entries, 0);
 
-            System.out.println("──────── end " + file.getName() + "────────");
+            System.out.println("──────── end " + file.getName() + " ────────");
         }
-
-        /*
-        for (int i = 1; i <= 20; i++) {
-            try (InputStream inputStream = DicomFile.class.getResourceAsStream("/test-" + i + ".dcm");
-                 DicomInputStream dicomInputStream = new DicomInputStream(inputStream)) {
-
-                Attributes attributes = dicomInputStream.readDataset(-1);
-
-                Patient patient = new Patient();
-                patient.setId(UUID.randomUUID());
-                patient.setPatientID(attributes.getString(Tag.PatientID));
-                patient.setIssuerOfPatientID(attributes.getString(Tag.IssuerOfPatientID));
-                patient.setPatientSex(attributes.getString(Tag.PatientSex));
-
-                Study study = new Study();
-                study.setPatientAge(attributes.getString(Tag.PatientAge));
-                study.setPregnancyStatus(attributes.getInt(Tag.PregnancyStatus, -1)); // todo review getting ints
-                study.setStudyInstanceUID(attributes.getString(Tag.StudyInstanceUID));
-                study.setAccessionNumber(attributes.getString(Tag.AccessionNumber));
-                study.setStudyDate(attributes.getString(Tag.StudyDate));
-                study.setStudyTime(attributes.getString(Tag.StudyTime));
-                study.setStudyDescription(attributes.getString(Tag.StudyDescription));
-                study.setReferringPhysicianName(attributes.getString(Tag.ReferringPhysicianName));
-                study.setRequestingPhysician(attributes.getString(Tag.RequestingPhysician));
-                study.setInstitutionName(attributes.getString(Tag.InstitutionName));
-                study.setInstitutionalDepartmentName(attributes.getString(Tag.InstitutionalDepartmentName));
-                study.setStationName(attributes.getString(Tag.StationName));
-
-                Instance instance = new Instance();
-                instance.setSopClassUID(attributes.getString(Tag.SOPClassUID));
-                instance.setSopInstanceUID(attributes.getString(Tag.SOPInstanceUID));
-                instance.setInstanceNumber(attributes.getInt(Tag.InstanceNumber, 0)); // todo review ints
-                instance.setContentDate(attributes.getString(Tag.ContentDate));
-                instance.setContentTime(attributes.getString(Tag.ContentTime));
-                instance.setModality(attributes.getString(Tag.Modality));
-                instance.setSeriesDescription(attributes.getString(Tag.SeriesDescription));
-
-                List<List<Object>> entries = parse(attributes);
-
-                print(entries, 0);
-
-                System.out.println("─────────────────────────────────────────────");
-                System.out.println("─────────────────────────────────────────────");
-                System.out.println("─────────────────────────────────────────────");
-            }
-        }
-         */
     }
 
     public static List<DicomStructuredReport> contentSequence(Sequence sequence) throws Exception {
@@ -119,6 +71,8 @@ public class DicomFile {
                 }
                 case "UIDREF" -> dicomStructuredReport.setValue(attributes.getString(Tag.UID));
                 case "DATETIME" -> dicomStructuredReport.setValue(attributes.getString(Tag.DateTime));
+                case "DATE" -> dicomStructuredReport.setValue(attributes.getString(Tag.Date));
+                case "TIME" -> dicomStructuredReport.setValue(attributes.getString(Tag.Time));
                 case "NUM" -> {
                         Attributes measuredValue = attributes.getNestedDataset(Tag.MeasuredValueSequence);
 
@@ -133,11 +87,19 @@ public class DicomFile {
                             if (measurementUnitsCode != null) {
                                 dicomStructuredReport.setUnit(measurementUnitsCode.getString(Tag.CodeMeaning));
                             }
-
                         }
                 }
+                case "IMAGE" -> {
+                    Attributes conceptCode = attributes.getNestedDataset(Tag.ReferencedSOPSequence);
+                    if (conceptCode != null) {
+                        dicomStructuredReport.setValue(conceptCode.getString(Tag.ReferencedSOPInstanceUID));
+                    }
+                }
+                case "COMPOSITE", "WAVEFORM", "SCOORD", "SCOORD3D", "TCOORD", "TABLE" -> {
+                    System.out.println("!!! ignored " + dicomStructuredReport.getType() + " | " + attributes);
+                }
                 default -> {
-                    System.out.println("!!! error " + attributes);
+                    System.out.println("??? invalid " + dicomStructuredReport.getType() + " | " + attributes);
                 }
             }
 
