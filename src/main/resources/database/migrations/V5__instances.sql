@@ -34,34 +34,6 @@ CREATE TABLE instances_computed_tomographies (
     FOREIGN KEY (instances_id) REFERENCES instances (id)
 );
 
-CREATE TABLE instances_mammographies (
-    instances_id            BLOB  NOT NULL,
-    laterality              TEXT  NULL,
-    view                    TEXT  NULL,
-    view_modifier           TEXT  NULL,
-    compression_thickness   REAL  NULL,
-    target                  TEXT  NULL,
-    entrance_surface_dose   REAL  NULL,
-    average_glandular_dose  REAL  NULL,
-    exposure_control_mode   TEXT  NULL,
-    exposure_control_mode   TEXT  NULL,
-
-    PRIMARY KEY (instances_id),
-    FOREIGN KEY (instances_id) REFERENCES instances (id)
-);
-
-CREATE TABLE instances_mammographies_filters (
-    id                          BLOB  NOT NULL,
-    instances_mammographies_id  BLOB  NOT NULL,
-    material                    TEXT  NULL,
-    voltage_peak                REAL  NULL,
-    tube_current                REAL  NULL,
-    exposure_time               REAL  NULL,
-
-    PRIMARY KEY (id),
-    FOREIGN KEY (instances_mammographies_id) REFERENCES instances_mammographies (id)
-);
-
 CREATE TABLE instances_fluoroscopies (
     instances_id              BLOB  NOT NULL,
     type                      TEXT  NULL,
@@ -94,38 +66,31 @@ CREATE TABLE instances_fluoroscopies_filters (
     FOREIGN KEY (instances_fluoroscopies_id) REFERENCES instances_fluoroscopies (id)
 );
 
-CREATE TABLE instances_radiographies (
+CREATE TABLE instances_mammographies (
     instances_id            BLOB  NOT NULL,
-    anatomical_structure    TEXT  NULL,
     laterality              TEXT  NULL,
-    target_region           TEXT  NULL,
-    image_view              TEXT  NULL,
-    voltage_peak            REAL  NULL,
-    tube_current            REAL  NULL,
-    exposure_time           REAL  NULL,
-    source_image_distance   REAL  NULL,
-    grid_focal_distance     REAL  NULL,
-    exposure_index          REAL  NULL,
-    target_exposure_index   REAL  NULL,
-    deviation_index         REAL  NULL,
-    relative_xray_exposure  REAL  NULL,
-    relative_exposure_unit  TEXT  NULL,
-    dose_area_product       REAL  NULL,
+    view                    TEXT  NULL,
+    view_modifier           TEXT  NULL,
+    compression_thickness   REAL  NULL,
+    target                  TEXT  NULL,
+    entrance_surface_dose   REAL  NULL,
+    average_glandular_dose  REAL  NULL,
     exposure_control_mode   TEXT  NULL,
 
     PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
 );
 
-CREATE TABLE instances_radiographies_filters (
+CREATE TABLE instances_mammographies_filters (
     id                          BLOB  NOT NULL,
-    instances_radiographies_id  BLOB  NOT NULL,
+    instances_mammographies_id  BLOB  NOT NULL,
     material                    TEXT  NULL,
-    thickness_min               REAL  NULL,
-    thickness_max               REAL  NULL,
+    voltage_peak                REAL  NULL,
+    tube_current                REAL  NULL,
+    exposure_time               REAL  NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (instances_radiographies_id) REFERENCES instances_radiographies (id)
+    FOREIGN KEY (instances_mammographies_id) REFERENCES instances_mammographies (id)
 );
 
 CREATE TABLE instances_nuclear_medicines (
@@ -161,4 +126,38 @@ CREATE TABLE instances_nuclear_medicines (
     PRIMARY KEY (instances_id),
     FOREIGN KEY (instances_id) REFERENCES instances (id)
     FOREIGN KEY (associated_computed_tomographies_id) REFERENCES instances (id)
+);
+
+CREATE TABLE instances_radiographies (
+    instances_id            BLOB  NOT NULL,
+    anatomical_structure    TEXT  NULL,
+    laterality              TEXT  NULL,
+    target_region           TEXT  NULL,
+    image_view              TEXT  NULL,
+    voltage_peak            REAL  NULL,
+    tube_current            REAL  NULL,
+    exposure_time           REAL  NULL,
+    source_image_distance   REAL  NULL,
+    grid_focal_distance     REAL  NULL,
+    exposure_index          REAL  NULL,
+    target_exposure_index   REAL  NULL,
+    deviation_index         REAL  NULL,
+    relative_xray_exposure  REAL  NULL,
+    relative_exposure_unit  TEXT  NULL,
+    dose_area_product       REAL  NULL,
+    exposure_control_mode   TEXT  NULL,
+
+    PRIMARY KEY (instances_id),
+    FOREIGN KEY (instances_id) REFERENCES instances (id)
+);
+
+CREATE TABLE instances_radiographies_filters (
+    id                          BLOB  NOT NULL,
+    instances_radiographies_id  BLOB  NOT NULL,
+    material                    TEXT  NULL,
+    thickness_min               REAL  NULL,
+    thickness_max               REAL  NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (instances_radiographies_id) REFERENCES instances_radiographies (id)
 );

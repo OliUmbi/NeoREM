@@ -23,7 +23,7 @@ public class DicomFile {
 
     public static void main(String[] args) throws Exception {
 
-        URL resource = DicomFile.class.getResource("/ct");
+        URL resource = DicomFile.class.getResource("/orso");
 
         for (File file : Paths.get(resource.toURI()).toFile().listFiles()) {
 

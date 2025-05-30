@@ -5,5 +5,6 @@ CREATE TABLE devices (
     serial        TEXT  NULL,
     software      TEXT  NULL,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE (manufacturer, model, serial, software)
 );

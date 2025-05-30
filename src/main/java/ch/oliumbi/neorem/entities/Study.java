@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,7 +23,8 @@ public class Study {
     private String modality;
     private String instanceId;
     private String accessionId;
-    private String date;
+    private LocalDate date;
+    private LocalTime time;
     private String description;
     private String reason;
     private String requestedProcedure;
@@ -30,12 +34,11 @@ public class Study {
     private String station;
     private String physicians;
     private String operators;
-    private String height;
-    private String weight;
-    private String bodyMassIndex;
-    private String age;
+    private Integer height;
+    private Integer weight;
+    private Double bodyMassIndex;
+    private Integer age;
     private String pregnancy;
-    private String events;
     private String comment;
 
     private Set<Instance> instances;

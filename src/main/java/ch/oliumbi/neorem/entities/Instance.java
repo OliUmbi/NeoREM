@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,5 +25,9 @@ public class Instance {
     private String protocol;
     private String comment;
 
-    private Set<Item> items;
+    private InstanceComputedTomography instanceComputedTomography;
+    private InstanceFluoroscopy instanceFluoroscopy;
+    private InstanceMammography instanceMammography;
+    private InstanceNuclearMedicine instanceNuclearMedicine;
+    private InstanceRadiography instanceRadiography;
 }
