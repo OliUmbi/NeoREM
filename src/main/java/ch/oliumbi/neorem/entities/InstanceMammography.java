@@ -24,6 +24,7 @@ public class InstanceMammography {
     private Double entranceSurfaceDose;
     private Double averageGlandularDose;
     private String exposureControlMode;
+    // todo exposureControlModeDescription maybe useful
 
     private Set<InstanceMammographyFilter> filters = new HashSet<>();
 }

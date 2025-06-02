@@ -44,7 +44,7 @@ public class Ingest {
 
     public static void main(String[] args) throws Exception {
         Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper());
-        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\rg\\DX-RDSR-Carestream_DRXEvolution.dcm"));
+        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\mg\\MG-Im-Hologic-PropProj.dcm"));
     }
 
     public void ingest(File file) {
@@ -58,6 +58,8 @@ public class Ingest {
             Attributes attributes = dicomInputStream.readDataset();
 
             Dicom dicom = parse(attributes);
+
+            System.out.println(dicom);
 
             Patient patient = patientMapper.map(new Patient(), dicom);
             Device device = deviceMapper.map(new Device(), dicom);

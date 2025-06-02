@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,5 +21,5 @@ public class Device {
     private String serial;
     private String software;
 
-    private Set<Study> studies;
+    private Set<Study> studies = new HashSet<>();
 }

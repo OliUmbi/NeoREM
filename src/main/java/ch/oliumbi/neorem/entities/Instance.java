@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +22,8 @@ public class Instance {
     private String modality;
     private String seriesId;
     private String instanceId;
-    private String date;
+    private LocalDate date;
+    private LocalTime time;
     private String description;
     private String protocol;
     private String comment;

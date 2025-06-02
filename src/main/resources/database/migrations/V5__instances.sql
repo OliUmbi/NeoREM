@@ -88,6 +88,7 @@ CREATE TABLE instances_mammographies_filters (
     voltage_peak                REAL  NULL,
     tube_current                REAL  NULL,
     exposure_time               REAL  NULL,
+    tube_current_time           REAL  NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (instances_mammographies_id) REFERENCES instances_mammographies (id)

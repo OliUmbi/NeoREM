@@ -15,16 +15,23 @@ public class Dicom extends ArrayList<Dicom> {
     private String name;
     private String value;
 
-    public List<Dicom> get(String name) {
+    public List<Dicom> all(String name) {
         return this.stream()
                 .filter(dicom -> name.equalsIgnoreCase(dicom.name()))
                 .toList();
     }
 
-    // todo optional
-    public Optional<Dicom> getFirst(String name) {
+    public Optional<Dicom> first() {
         try {
-            return Optional.of(get(name).getFirst());
+            return Optional.of(this.getFirst());
+        } catch (NoSuchElementException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Dicom> first(String name) {
+        try {
+            return Optional.of(all(name).getFirst());
         } catch (NoSuchElementException e) {
             return Optional.empty();
         }
@@ -120,6 +127,25 @@ public class Dicom extends ArrayList<Dicom> {
         }
     }
 
+    public Optional<String> modality() {
+        return switch (value) {
+            case "CT" -> Optional.of("Computer Tomography");
+            case "MG" -> Optional.of("Mammography");
+            case "RF", "XA" -> Optional.of("Fluoroscopy");
+            case "DX", "CR", "PX" -> Optional.of("Radiography");
+            case "NM", "PT" -> Optional.of("Nuclear Medicine");
+            default -> Optional.empty();
+        };
+    }
+
+    public Optional<String> laterality() {
+        return switch (value) {
+            case "L" -> Optional.of("Left");
+            case "R" -> Optional.of("Right");
+            default -> Optional.empty();
+        };
+    }
+
     public Optional<Integer> height() {
         return floatingPoint().map(height -> (int) Math.round(height + 100));
     }
@@ -153,6 +179,22 @@ public class Dicom extends ArrayList<Dicom> {
 
     @Override
     public String toString() {
-        return name + " [" + size() + "]: " + value;
+        StringBuilder result = new StringBuilder();
+        result.append(name).append(" : ").append(value);
+
+        if (size() > 0) {
+            result.append(" [").append(size()).append("]");
+        }
+
+        result.append("\n");
+
+        for (Dicom child : this) {
+            for (String line : child.toString().split("\n")) {
+                result.append("│  ").append(line);
+                result.append("\n");
+            }
+        }
+
+        return result.toString();
     }
 }

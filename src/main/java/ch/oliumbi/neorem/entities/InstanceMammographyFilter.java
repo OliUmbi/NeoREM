@@ -19,4 +19,5 @@ public class InstanceMammographyFilter {
     private Double voltagePeak;
     private Double tubeCurrent;
     private Double exposureTime;
+    private Double tubeCurrentTime;
 }

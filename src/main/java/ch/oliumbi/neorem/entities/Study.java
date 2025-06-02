@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,5 +42,11 @@ public class Study {
     private String pregnancy;
     private String comment;
 
-    private Set<Instance> instances;
+    private StudyComputedTomography studyComputedTomography;
+    private StudyFluoroscopy studyFluoroscopy;
+    private StudyMammography studyMammography;
+    private StudyNuclearMedicine studyNuclearMedicine;
+    private StudyRadiography studyRadiography;
+
+    private Set<Instance> instances = new HashSet<>();
 }

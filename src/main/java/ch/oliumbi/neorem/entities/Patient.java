@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,5 +20,5 @@ public class Patient {
     private String externalIssuer;
     private String sex;
 
-    private Set<Study> studies;
+    private Set<Study> studies = new HashSet<>();
 }
