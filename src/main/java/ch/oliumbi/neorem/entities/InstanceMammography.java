@@ -21,10 +21,13 @@ public class InstanceMammography {
     private String viewModifier;
     private Double compressionThickness;
     private String target;
+    private String filter;
+    private Double voltagePeak;
+    private Double tubeCurrent;
+    private Double exposureTime;
+    private Double tubeCurrentTime;
     private Double entranceSurfaceDose;
     private Double averageGlandularDose;
     private String exposureControlMode;
-    // todo exposureControlModeDescription maybe useful
-
-    private Set<InstanceMammographyFilter> filters = new HashSet<>();
+    private String exposureControlModeDescription;
 }

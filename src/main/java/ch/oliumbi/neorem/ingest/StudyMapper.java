@@ -38,6 +38,7 @@ public class StudyMapper {
                 .flatMap(Dicom::localTime)
                 .orElse(null));
 
+        // todo fallback to series description
         study.setDescription(dicom
                 .first("StudyDescription")
                 .map(Dicom::string)

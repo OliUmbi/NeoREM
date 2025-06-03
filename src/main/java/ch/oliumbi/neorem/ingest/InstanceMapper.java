@@ -40,7 +40,10 @@ public class InstanceMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
-        // instance.setComment();
+        instance.setComment(dicom
+                .first("CommentsOnRadiationDose")
+                .map(Dicom::string)
+                .orElse(null));
 
         return instance;
     }
@@ -121,6 +124,31 @@ public class InstanceMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
+        instance.getInstanceMammography().setFilter(dicom
+                .first("FilterMaterial")
+                .map(Dicom::string)
+                .orElse(null));
+
+        instance.getInstanceMammography().setVoltagePeak(dicom
+                .first("KVP")
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        instance.getInstanceMammography().setTubeCurrent(dicom
+                .first("XRayTubeCurrent")
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        instance.getInstanceMammography().setExposureTime(dicom
+                .first("ExposureTime")
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        instance.getInstanceMammography().setTubeCurrentTime(dicom
+                .first("FilterMaterial")
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
         // todo there is also an EntranceDose
         instance.getInstanceMammography().setEntranceSurfaceDose(dicom
                 .first("EntranceDoseInmGy")
@@ -135,6 +163,11 @@ public class InstanceMapper {
 
         instance.getInstanceMammography().setExposureControlMode(dicom
                 .first("ExposureControlMode")
+                .map(Dicom::string)
+                .orElse(null));
+
+        instance.getInstanceMammography().setExposureControlModeDescription(dicom
+                .first("ExposureControlModeDescription")
                 .map(Dicom::string)
                 .orElse(null));
 

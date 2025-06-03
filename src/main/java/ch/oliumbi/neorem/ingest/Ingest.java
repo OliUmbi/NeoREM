@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Component
@@ -44,8 +46,51 @@ public class Ingest {
 
     public static void main(String[] args) throws Exception {
         Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper());
-        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\mg\\MG-Im-Hologic-PropProj.dcm"));
+
+        List<String> folders = List.of("/ct", "/fl", "/mg", "/nm", "/rg", "/orso");
+        Map<String, Object> data = new HashMap<>();
+
+        for (String folder : folders) {
+
+            URL resource = DicomFile.class.getResource(folder);
+
+            for (File file : Paths.get(resource.toURI()).toFile().listFiles()) {
+
+                try (DicomInputStream dicomInputStream = new DicomInputStream(file)) {
+                    Attributes attributes = dicomInputStream.readDataset();
+
+                    Dicom dicom = ingest.parse(attributes);
+
+                    resolve(data, dicom);
+                }
+            }
+        }
+        System.out.println(data);
     }
+
+    public static void resolve(Map<String, Object> data, Dicom dicom) {
+
+        for (Dicom child : dicom) {
+            if (child.string() == null && child.isEmpty() || child.name() != null && child.name().startsWith("(")) {
+                continue;
+            }
+
+            if (!data.containsKey(child.name())) {
+                HashMap<String, Object> children = new HashMap<>();
+
+                resolve(children, child);
+
+                data.put(child.name(), children);
+            } else {
+                resolve((Map<String, Object>) data.get(child.name()), child);
+            }
+        }
+    }
+
+//    public static void main(String[] args) throws Exception {
+//        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper());
+//        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\fl\\RF-RDSR-GE-OECEliteMiniView.dcm"));
+//    }
 
     public void ingest(File file) {
 
@@ -64,6 +109,7 @@ public class Ingest {
             Patient patient = patientMapper.map(new Patient(), dicom);
             Device device = deviceMapper.map(new Device(), dicom);
 
+            // differentiate by Modality, ModalitiesInStudy, PerformedProcedureCodeSequence.CodeMeaning, Procedure reported
 
         } catch (IOException e) {
             // todo handle input stream exception / reading attributes
