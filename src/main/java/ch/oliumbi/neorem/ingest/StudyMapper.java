@@ -44,7 +44,6 @@ public class StudyMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
-        // todo rdsr specific
         study.setReason(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Procedure reported"))
@@ -77,10 +76,11 @@ public class StudyMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
+        // todo add all physicians
         study.setPhysicians(dicom
                 .first("PerformingPhysicianName")
                 .map(Dicom::string)
-                .orElse(null)); // todo add all physicians
+                .orElse(null));
 
         study.setOperators(dicom
                 .first("OperatorsName")
@@ -97,10 +97,11 @@ public class StudyMapper {
                 .flatMap(Dicom::integer)
                 .orElse(null));
 
+        // todo calculate if not present
         study.setBodyMassIndex(dicom
                 .first("PatientBodyMassIndex")
                 .flatMap(Dicom::floatingPoint)
-                .orElse(null)); // todo calculate if not present
+                .orElse(null));
 
         study.setAge(dicom
                 .first("PatientAge")
@@ -117,100 +118,33 @@ public class StudyMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
-        return study;
-    }
-
-    // todo rdsr specific
-    public StudyComputedTomography mapComputedTomography(StudyComputedTomography studyComputedTomography, Dicom dicom) {
-
-        studyComputedTomography.setEvents(dicom
+        study.setEvents(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("CT Accumulated Dose Data"))
                 .flatMap(d -> d.first("Total Number of Irradiation Events"))
                 .flatMap(Dicom::integer)
                 .orElse(null));
+        // todo choose strategy depending on set value
+        study.setEvents(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Total Number of Radiographic Frames"))
+                .flatMap(Dicom::integer)
+                .orElse(null));
 
-        studyComputedTomography.setDoseAreaProduct(dicom
+        study.setDoseLengthProduct(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("CT Accumulated Dose Data"))
                 .flatMap(d -> d.first("CT Dose Length Product Total"))
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
-        
-        return studyComputedTomography;
-    }
 
-    // todo rdsr specific
-    public StudyFluoroscopy mapFluoroscopy(StudyFluoroscopy studyFluoroscopy, Dicom dicom) {
-
-        studyFluoroscopy.setDoseAreaProductFluoroscopy(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Fluoro Dose Area Product Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setDoseAreaProductAcquisition(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Acquisition Dose Area Product Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setDoseAreaProductTotal(dicom
+        study.setDoseAreaProduct(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
                 .flatMap(d -> d.first("Dose Area Product Total"))
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
-
-        studyFluoroscopy.setDoseReferencePointFluoroscopy(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Fluoro Dose (RP) Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setDoseReferencePointAcquisition(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Acquisition Dose (RP) Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setDoseReferencePointTotal(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Dose (RP) Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setDurationFluoroscopy(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Total Fluoro Time"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setDurationAcquisition(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Total Acquisition Time"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyFluoroscopy.setReferencePointDefinition(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Reference Point Definition"))
-                .map(Dicom::string)
-                .orElse(null));
-
-        return studyFluoroscopy;
-    }
-
-    // todo rdsr specific
-    public StudyMammography mapMammography(StudyMammography studyMammography, Dicom dicom) {
 
         List<Dicom> averageGlandularDoses = dicom
                 .first("ContentSequence")
@@ -222,37 +156,88 @@ public class StudyMapper {
                 String laterality = averageGlandularDose.first("Laterality").map(Dicom::string).orElse("");
 
                 if (StringUtils.containsIgnoreCase(laterality, "left")) {
-                    studyMammography.setAverageGlandularDoseLeft(averageGlandularDose.floatingPoint().orElse(null));
+                    study.setAverageGlandularDoseLeft(averageGlandularDose.floatingPoint().orElse(null));
                 }
 
                 if (StringUtils.containsIgnoreCase(laterality, "right")) {
-                    studyMammography.setAverageGlandularDoseRight(averageGlandularDose.floatingPoint().orElse(null));
+                    study.setAverageGlandularDoseRight(averageGlandularDose.floatingPoint().orElse(null));
                 }
             }
         }
 
-        return studyMammography;
-    }
-
-    // todo rdsr specific
-    public StudyNuclearMedicine mapNuclearMedicine(StudyNuclearMedicine studyNuclearMedicine, Dicom dicom) {
-
-        studyNuclearMedicine.setEffectiveDose(dicom
+        // todo check if correct
+        study.setDurationTotal(dicom
                 .first("ContentSequence")
-                .flatMap(d -> d.first("Radiopharmaceutical Administration"))
-                .flatMap(d -> d.first("Effective Dose Information"))
-                .flatMap(d -> d.first("Effective Dose"))
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Total Time"))
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
-        studyNuclearMedicine.setAgent(dicom
+        study.setDurationFluoroscopy(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Total Fluoro Time"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDurationAcquisition(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Total Acquisition Time"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDoseAreaProductTotal(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Dose Area Product Total"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDoseAreaProductFluoroscopy(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Fluoro Dose Area Product Total"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDoseAreaProductAcquisition(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Acquisition Dose Area Product Total"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDoseReferencePointTotal(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Dose (RP) Total"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDoseReferencePointFluoroscopy(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Fluoro Dose (RP) Total"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setDoseReferencePointAcquisition(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                .flatMap(d -> d.first("Acquisition Dose (RP) Total"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+
+        study.setPharmaceuticalAgent(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Radiopharmaceutical agent"))
                 .map(Dicom::string)
                 .orElse(null));
 
-        studyNuclearMedicine.setRadionuclide(dicom
+        study.setPharmaceuticalRadionuclide(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Radiopharmaceutical agent"))
@@ -260,7 +245,7 @@ public class StudyMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
-        studyNuclearMedicine.setHalfLife(dicom
+        study.setPharmaceuticalHalfLife(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Radiopharmaceutical agent"))
@@ -268,37 +253,30 @@ public class StudyMapper {
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
-        studyNuclearMedicine.setTimeStart(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Radiopharmaceutical Administration"))
-                .flatMap(d -> d.first("Radiopharmaceutical Start DateTime"))
-                .flatMap(Dicom::localDateTime)
-                .map(LocalDateTime::toLocalTime)
-                .orElse(null));
-
-        studyNuclearMedicine.setTimeEnd(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Radiopharmaceutical Administration"))
-                .flatMap(d -> d.first("Radiopharmaceutical Stop DateTime"))
-                .flatMap(Dicom::localDateTime)
-                .map(LocalDateTime::toLocalTime)
-                .orElse(null));
-
-        studyNuclearMedicine.setActivity(dicom
+        study.setPharmaceuticalActivity(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Administered activity"))
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
-        studyNuclearMedicine.setRoute(dicom
+        study.setPharmaceuticalDose(dicom
+                .first("ContentSequence")
+                .flatMap(d -> d.first("Radiopharmaceutical Administration"))
+                .flatMap(d -> d.first("Effective Dose Information"))
+                .flatMap(d -> d.first("Effective Dose"))
+                .flatMap(Dicom::floatingPoint)
+                .orElse(null));
+
+        study.setPharmaceuticalRoute(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Route of administration"))
                 .map(Dicom::string)
                 .orElse(null));
 
-        studyNuclearMedicine.setLaterality(dicom
+        // todo check lateralities
+        study.setPharmaceuticalLaterality(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Route of administration"))
@@ -306,40 +284,21 @@ public class StudyMapper {
                 .map(Dicom::string)
                 .orElse(null));
 
-        return studyNuclearMedicine;
-    }
-
-    // todo rdsr specific
-    public StudyRadiography mapRadiography(StudyRadiography studyRadiography, Dicom dicom) {
-
-        studyRadiography.setEvents(dicom
+        study.setPharmaceuticalTime(dicom
                 .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Total Number of Radiographic Frames"))
-                .flatMap(Dicom::integer)
+                .flatMap(d -> d.first("Radiopharmaceutical Administration"))
+                .flatMap(d -> d.first("Radiopharmaceutical Start DateTime"))
+                .flatMap(Dicom::localDateTime)
+                .map(LocalDateTime::toLocalTime)
                 .orElse(null));
 
-        studyRadiography.setDoseAreaProduct(dicom
+        study.setPharmaceuticalComment(dicom
                 .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Dose Area Product Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyRadiography.setDoseReferencePointTotal(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Dose (RP) Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        studyRadiography.setReferencePointDefinition(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Reference Point Definition"))
+                .flatMap(d -> d.first("Radiopharmaceutical Administration"))
+                .flatMap(d -> d.first("Comment -> {HashMap@2004} size = 0"))
                 .map(Dicom::string)
                 .orElse(null));
 
-        return studyRadiography;
+        return study;
     }
 }

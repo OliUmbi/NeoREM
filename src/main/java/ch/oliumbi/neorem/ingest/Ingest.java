@@ -1,7 +1,9 @@
 package ch.oliumbi.neorem.ingest;
 
 import ch.oliumbi.neorem.entities.Device;
+import ch.oliumbi.neorem.entities.Instance;
 import ch.oliumbi.neorem.entities.Patient;
+import ch.oliumbi.neorem.entities.Study;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.ElementDictionary;
 import org.dcm4che3.data.Sequence;
@@ -23,10 +25,14 @@ public class Ingest {
 
     private final PatientMapper patientMapper;
     private final DeviceMapper deviceMapper;
+    private final StudyMapper studyMapper;
+    private final InstanceMapper instanceMapper;
 
-    public Ingest(PatientMapper patientMapper, DeviceMapper deviceMapper) {
+    public Ingest(PatientMapper patientMapper, DeviceMapper deviceMapper, StudyMapper studyMapper, InstanceMapper instanceMapper) {
         this.patientMapper = patientMapper;
         this.deviceMapper = deviceMapper;
+        this.studyMapper = studyMapper;
+        this.instanceMapper = instanceMapper;
     }
 
     /*
@@ -45,7 +51,7 @@ public class Ingest {
     */
 
     public static void main(String[] args) throws Exception {
-        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper());
+        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
 
         List<String> folders = List.of("/ct", "/fl", "/mg", "/nm", "/rg", "/orso");
         Map<String, Object> data = new HashMap<>();
@@ -88,7 +94,7 @@ public class Ingest {
     }
 
 //    public static void main(String[] args) throws Exception {
-//        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper());
+//        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
 //        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\fl\\RF-RDSR-GE-OECEliteMiniView.dcm"));
 //    }
 
@@ -104,11 +110,13 @@ public class Ingest {
 
             Dicom dicom = parse(attributes);
 
-            System.out.println(dicom);
 
             Patient patient = patientMapper.map(new Patient(), dicom);
             Device device = deviceMapper.map(new Device(), dicom);
+            Study study = studyMapper.map(new Study(), dicom);
+            Instance instance = instanceMapper.map(new Instance(), dicom);
 
+            System.out.println(dicom);
             // differentiate by Modality, ModalitiesInStudy, PerformedProcedureCodeSequence.CodeMeaning, Procedure reported
 
         } catch (IOException e) {

@@ -1,7 +1,6 @@
 CREATE TABLE instances (
     id                        BLOB  NOT NUll,
     studies_id                BLOB  NOT NUll,
-    series_id                 TEXT  NUll,
     event_id                  TEXT  NUll,
     modality                  TEXT  NUll,
     comment                   TEXT  NUll,
@@ -32,9 +31,6 @@ CREATE TABLE instances (
     dose_organ                REAL  NUll,
     modulation                TEXT  NUll,
     compression_thickness     REAL  NUll,
-    exposure_index            REAL  NUll,
-    exposure_index_target     REAL  NUll,
-    exposure_index_deviation  REAL  NUll,
 
     PRIMARY KEY (id),
     FOREIGN KEY (studies_id) REFERENCES studies (id),

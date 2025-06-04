@@ -131,7 +131,7 @@ public class Dicom extends ArrayList<Dicom> {
         return switch (value) {
             case "CT" -> Optional.of("Computer Tomography");
             case "MG" -> Optional.of("Mammography");
-            case "RF", "XA" -> Optional.of("Fluoroscopy");
+            case "RF", "XA", "Fluoroscopy" -> Optional.of("Fluoroscopy");
             case "DX", "CR", "PX" -> Optional.of("Radiography");
             case "NM", "PT" -> Optional.of("Nuclear Medicine");
             default -> Optional.empty();

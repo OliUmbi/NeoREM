@@ -19,18 +19,34 @@ public class Instance {
 
     private UUID id;
     private UUID studiesId;
+    private String eventId;
     private String modality;
-    private String seriesId;
-    private String instanceId;
+    private String comment;
     private LocalDate date;
     private LocalTime time;
-    private String description;
     private String protocol;
-    private String comment;
-
-    private InstanceComputedTomography instanceComputedTomography;
-    private InstanceFluoroscopy instanceFluoroscopy;
-    private InstanceMammography instanceMammography;
-    private InstanceNuclearMedicine instanceNuclearMedicine;
-    private InstanceRadiography instanceRadiography;
+    private String type;
+    private String plane;
+    private String region;
+    private String anatomy;
+    private String laterality;
+    private String view;
+    private String orientation;
+    private Double exposureTime;
+    private Double exposureTimeRotation;
+    private Double duration;
+    private Double scanningLength;
+    private Double pulseWidth;
+    private Double pulseRate;
+    private Double voltagePeak;
+    private Double tubeCurrent;
+    private Double tubeCurrentPeak;
+    private Double tubeCurrentTime;
+    private Double doseAreaProduct;
+    private Double doseLengthProduct;
+    private Double doseIndexVolume;
+    private Double doseReferencePoint;
+    private Double doseOrgan;
+    private String modulation;
+    private Double compressionThickness;
 }

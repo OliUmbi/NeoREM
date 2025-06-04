@@ -41,12 +41,29 @@ public class Study {
     private Integer age;
     private String pregnancy;
     private String comment;
-
-    private StudyComputedTomography studyComputedTomography;
-    private StudyFluoroscopy studyFluoroscopy;
-    private StudyMammography studyMammography;
-    private StudyNuclearMedicine studyNuclearMedicine;
-    private StudyRadiography studyRadiography;
+    private Integer events;
+    private Double doseLengthProduct;
+    private Double doseAreaProduct;
+    private Double averageGlandularDoseLeft;
+    private Double averageGlandularDoseRight;
+    private Double durationTotal;
+    private Double durationFluoroscopy;
+    private Double durationAcquisition;
+    private Double doseAreaProductTotal;
+    private Double doseAreaProductFluoroscopy;
+    private Double doseAreaProductAcquisition;
+    private Double doseReferencePointTotal;
+    private Double doseReferencePointFluoroscopy;
+    private Double doseReferencePointAcquisition;
+    private String pharmaceuticalAgent;
+    private String pharmaceuticalRadionuclide;
+    private Double pharmaceuticalHalfLife;
+    private Double pharmaceuticalActivity;
+    private Double pharmaceuticalDose;
+    private String pharmaceuticalRoute;
+    private String pharmaceuticalLaterality;
+    private LocalTime pharmaceuticalTime;
+    private String pharmaceuticalComment;
 
     private Set<Instance> instances = new HashSet<>();
 }
