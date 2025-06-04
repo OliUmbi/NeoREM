@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 @Component
 public class InstanceMapper {
 
+    // todo split up
+    // todo create instance object
+    // todo add support for image files
+    // todo search for secondary values or cases where information needs to be extracted elsewhere
+    // todo maybe restructure the value retrieval because it is kinda big
     public Instance map(Instance instance, Dicom dicom) {
 
         // todo support multiple instances
