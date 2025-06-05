@@ -49,8 +49,8 @@ public class Dicom extends ArrayList<Dicom> {
         return name;
     }
 
-    public String string() {
-        return value;
+    public Optional<String> string() {
+        return Optional.ofNullable(value);
     }
 
     public Optional<Integer> integer() {

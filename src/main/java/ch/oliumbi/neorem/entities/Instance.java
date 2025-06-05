@@ -36,8 +36,8 @@ public class Instance {
     private Double exposureTimeRotation;
     private Double duration;
     private Double scanningLength;
-    private Double pulseWidth;
     private Double pulseRate;
+    private Double pulseTime;
     private Double voltagePeak;
     private Double tubeCurrent;
     private Double tubeCurrentPeak;

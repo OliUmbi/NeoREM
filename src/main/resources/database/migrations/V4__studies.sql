@@ -49,6 +49,5 @@ CREATE TABLE studies (
     PRIMARY KEY (id),
     FOREIGN KEY (patients_id) REFERENCES patients (id),
     FOREIGN KEY (devices_id) REFERENCES devices (id),
-    UNIQUE (instance_id),
-    UNIQUE (accession_id)
+    UNIQUE (instance_id)
 );

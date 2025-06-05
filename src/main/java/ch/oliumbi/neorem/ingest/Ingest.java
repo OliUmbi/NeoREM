@@ -50,29 +50,29 @@ public class Ingest {
     think about hl7
     */
 
-    public static void main(String[] args) throws Exception {
-        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
-
-        List<String> folders = List.of("/ct", "/fl", "/mg", "/nm", "/rg", "/orso");
-        Map<String, Object> data = new HashMap<>();
-
-        for (String folder : folders) {
-
-            URL resource = DicomFile.class.getResource(folder);
-
-            for (File file : Paths.get(resource.toURI()).toFile().listFiles()) {
-
-                try (DicomInputStream dicomInputStream = new DicomInputStream(file)) {
-                    Attributes attributes = dicomInputStream.readDataset();
-
-                    Dicom dicom = ingest.parse(attributes);
-
-                    resolve(data, dicom);
-                }
-            }
-        }
-        System.out.println(data);
-    }
+//    public static void main(String[] args) throws Exception {
+//        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
+//
+//        List<String> folders = List.of("/ct", "/fl", "/mg", "/nm", "/rg", "/orso");
+//        Map<String, Object> data = new HashMap<>();
+//
+//        for (String folder : folders) {
+//
+//            URL resource = DicomFile.class.getResource(folder);
+//
+//            for (File file : Paths.get(resource.toURI()).toFile().listFiles()) {
+//
+//                try (DicomInputStream dicomInputStream = new DicomInputStream(file)) {
+//                    Attributes attributes = dicomInputStream.readDataset();
+//
+//                    Dicom dicom = ingest.parse(attributes);
+//
+//                    resolve(data, dicom);
+//                }
+//            }
+//        }
+//        System.out.println(data);
+//    }
 
     public static void resolve(Map<String, Object> data, Dicom dicom) {
 
@@ -93,10 +93,10 @@ public class Ingest {
         }
     }
 
-//    public static void main(String[] args) throws Exception {
-//        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
-//        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\fl\\RF-RDSR-GE-OECEliteMiniView.dcm"));
-//    }
+    public static void main(String[] args) throws Exception {
+        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
+        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\mg\\MG-RDSR-GEPristina-DBT.dcm"));
+    }
 
     public void ingest(File file) {
 
@@ -114,7 +114,7 @@ public class Ingest {
             Patient patient = patientMapper.map(new Patient(), dicom);
             Device device = deviceMapper.map(new Device(), dicom);
             Study study = studyMapper.map(new Study(), dicom);
-            Instance instance = instanceMapper.map(new Instance(), dicom);
+            List<Instance> instances = instanceMapper.mapIrradiationEvent(dicom);
 
             System.out.println(dicom);
             // differentiate by Modality, ModalitiesInStudy, PerformedProcedureCodeSequence.CodeMeaning, Procedure reported

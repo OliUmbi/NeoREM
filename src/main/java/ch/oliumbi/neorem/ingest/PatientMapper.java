@@ -9,17 +9,17 @@ public class PatientMapper {
     public Patient map(Patient patient, Dicom dicom) {
         patient.setExternalId(dicom
                 .first("PatientID")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         patient.setExternalIssuer(dicom
                 .first("IssuerOfPatientID")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         patient.setSex(dicom
                 .first("PatientSex")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         return patient;

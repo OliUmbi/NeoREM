@@ -18,8 +18,8 @@ CREATE TABLE instances (
     exposure_time_rotation    REAL  NUll,
     duration                  REAL  NUll,
     scanning_length           REAL  NUll,
-    pulse_width               REAL  NUll,
     pulse_rate                REAL  NUll,
+    pulse_time                REAL  NUll,
     voltage_peak              REAL  NUll,
     tube_current              REAL  NUll,
     tube_current_peak         REAL  NUll,
@@ -34,5 +34,5 @@ CREATE TABLE instances (
 
     PRIMARY KEY (id),
     FOREIGN KEY (studies_id) REFERENCES studies (id),
-    UNIQUE (instance_id)
+    UNIQUE (event_id)
 );

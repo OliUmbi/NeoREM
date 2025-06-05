@@ -15,17 +15,17 @@ public class StudyMapper {
 
         study.setModality(dicom
                 .first("Modality")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setInstanceId(dicom
                 .first("SOPInstanceUID")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setAccessionId(dicom
                 .first("AccessionNumber")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setDate(dicom
@@ -41,50 +41,50 @@ public class StudyMapper {
         // todo fallback to series description
         study.setDescription(dicom
                 .first("StudyDescription")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setReason(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Procedure reported"))
                 .flatMap(d -> d.first("Has Intent"))
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setRequestedProcedure(dicom
                 .first("RequestedProcedureDescription")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setPerformedProcedure(dicom
                 .first("PerformedProcedureStepDescription")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setInstitution(dicom
                 .first("InstitutionName")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setDepartment(dicom
                 .first("InstitutionalDepartmentName")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setStation(dicom
                 .first("StationName")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         // todo add all physicians
         study.setPhysicians(dicom
                 .first("PerformingPhysicianName")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setOperators(dicom
                 .first("OperatorsName")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setHeight(dicom
@@ -115,7 +115,7 @@ public class StudyMapper {
 
         study.setComment(dicom
                 .first("CommentsOnRadiationDose")
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setEvents(dicom
@@ -153,7 +153,7 @@ public class StudyMapper {
 
         if (averageGlandularDoses.size() == 2) {
             for (Dicom averageGlandularDose : averageGlandularDoses) {
-                String laterality = averageGlandularDose.first("Laterality").map(Dicom::string).orElse("");
+                String laterality = averageGlandularDose.first("Laterality").flatMap(Dicom::string).orElse(null);
 
                 if (StringUtils.containsIgnoreCase(laterality, "left")) {
                     study.setAverageGlandularDoseLeft(averageGlandularDose.floatingPoint().orElse(null));
@@ -229,12 +229,11 @@ public class StudyMapper {
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
-
         study.setPharmaceuticalAgent(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Radiopharmaceutical agent"))
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setPharmaceuticalRadionuclide(dicom
@@ -242,7 +241,7 @@ public class StudyMapper {
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Radiopharmaceutical agent"))
                 .flatMap(d -> d.first("Radionuclide"))
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setPharmaceuticalHalfLife(dicom
@@ -272,7 +271,7 @@ public class StudyMapper {
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Route of administration"))
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         // todo check lateralities
@@ -281,7 +280,7 @@ public class StudyMapper {
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Route of administration"))
                 .flatMap(d -> d.first("Site of"))
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         study.setPharmaceuticalTime(dicom
@@ -296,7 +295,7 @@ public class StudyMapper {
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Radiopharmaceutical Administration"))
                 .flatMap(d -> d.first("Comment -> {HashMap@2004} size = 0"))
-                .map(Dicom::string)
+                .flatMap(Dicom::string)
                 .orElse(null));
 
         return study;
