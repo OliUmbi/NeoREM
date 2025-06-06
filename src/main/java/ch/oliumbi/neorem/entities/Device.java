@@ -1,5 +1,6 @@
 package ch.oliumbi.neorem.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,38 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "devices", uniqueConstraints = @UniqueConstraint(columnNames = {"manufacturer", "model", "serial", "software"}))
 public class Device {
 
+    // todo maybe check if device infos even exist or if it is just empty
+
+    @Id
+    @Column(name = "id", nullable = false, columnDefinition = "BLOB")
     private UUID id;
+
+    @Column(name = "manufacturer")
     private String manufacturer;
+
+    @Column(name = "model")
     private String model;
+
+    @Column(name = "serial")
     private String serial;
+
+    @Column(name = "software")
     private String software;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "devices_id", referencedColumnName = "id")
     private Set<Study> studies = new HashSet<>();
+
+    public void merge(Device other) {
+        if (other == null) return;
+
+        if (other.manufacturer != null) manufacturer = other.manufacturer;
+        if (other.model != null) model = other.model;
+        if (other.serial != null) serial = other.serial;
+        if (other.software != null) software = other.software;
+    }
 }

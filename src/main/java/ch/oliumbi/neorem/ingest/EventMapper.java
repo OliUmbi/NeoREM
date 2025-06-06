@@ -1,16 +1,15 @@
 package ch.oliumbi.neorem.ingest;
 
-import ch.oliumbi.neorem.entities.Instance;
+import ch.oliumbi.neorem.entities.Event;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Component
-public class InstanceMapper {
+public class EventMapper {
 
     // todo split up
     // todo create instance object
@@ -18,8 +17,8 @@ public class InstanceMapper {
     // todo search for secondary values or cases where information needs to be extracted elsewhere
     // todo maybe restructure the value retrieval because it is kinda big
 
-    public List<Instance> mapIrradiationEvent(Dicom dicom) {
-        List<Instance> instances = new ArrayList<>();
+    public List<Event> mapIrradiationEvent(Dicom dicom) {
+        List<Event> events = new ArrayList<>();
 
         List<Dicom> irradiationEvents = dicom
                 .first("ContentSequence")
@@ -27,114 +26,132 @@ public class InstanceMapper {
                 .orElse(Collections.emptyList());
 
         if (irradiationEvents.isEmpty()) {
-            return instances;
+            return events;
         }
 
         for (Dicom irradiationEvent : irradiationEvents) {
-            Instance instance = new Instance();
+            Event event = new Event();
 
-            instance.setEventId(irradiationEvent
+            event.setExternalId(irradiationEvent
                     .first("Irradiation Event UID")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setModality(irradiationEvent
+            event.setModality(irradiationEvent
                     .first("Irradiation Event Type")
                     .flatMap(Dicom::modality)
                     .orElse(null));
 
-            instance.setComment(irradiationEvent
+            event.setComment(irradiationEvent
                     .first("Comment")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setDate(irradiationEvent
-                    .first("DateTime Started")
+            event.setDate(irradiationEvent
+                    .first("Date Time Started")
                     .flatMap(Dicom::localDateTime)
                     .map(LocalDateTime::toLocalDate)
                     .orElse(null));
 
-            instance.setTime(irradiationEvent
-                    .first("DateTime Started")
+            if (event.getDate() == null) {
+                event.setDate(irradiationEvent
+                        .first("DateTime Started")
+                        .flatMap(Dicom::localDateTime)
+                        .map(LocalDateTime::toLocalDate)
+                        .orElse(null));
+            }
+
+            event.setTime(irradiationEvent
+                    .first("Date Time Started")
                     .flatMap(Dicom::localDateTime)
                     .map(LocalDateTime::toLocalTime)
                     .orElse(null));
 
-            instance.setProtocol(irradiationEvent
+            if (event.getTime() == null) {
+                event.setTime(irradiationEvent
+                        .first("DateTime Started")
+                        .flatMap(Dicom::localDateTime)
+                        .map(LocalDateTime::toLocalTime)
+                        .orElse(null));
+            }
+
+            event.setProtocol(irradiationEvent
                     .first("Acquisition Protocol")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setType(irradiationEvent
+            event.setType(irradiationEvent
                     .first("Irradiation Event Type")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setPlane(irradiationEvent
+            event.setPlane(irradiationEvent
                     .first("Acquisition Plane")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setRegion(irradiationEvent
+            event.setRegion(irradiationEvent
                     .first("Target Region")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setAnatomy(irradiationEvent
+            event.setAnatomy(irradiationEvent
                     .first("Anatomical structure")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setLaterality(irradiationEvent
+            event.setLaterality(irradiationEvent
                     .first("Anatomical structure")
                     .flatMap(d -> d.first("Laterality"))
                     .flatMap(Dicom::laterality)
                     .orElse(null));
 
-            instance.setView(irradiationEvent
+            event.setView(irradiationEvent
                     .first("Image View")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setOrientation(irradiationEvent
+            event.setOrientation(irradiationEvent
                     .first("Patient Orientation")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setExposureTime(irradiationEvent
+            event.setExposureTime(irradiationEvent
                     .first("Exposure Time")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setDuration(irradiationEvent
+            event.setDuration(irradiationEvent
                     .first("Irradiation Duration")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setPulseRate(irradiationEvent
+            event.setPulseRate(irradiationEvent
                     .first("Pulse Rate")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setVoltagePeak(irradiationEvent
-                    .first("KVP")
-                    .flatMap(Dicom::floatingPoint)
+            event.setPulseTime(irradiationEvent
+                    .medianFloatingPoint("Pulse Width")
                     .orElse(null));
 
-            instance.setTubeCurrent(irradiationEvent
-                    .first("X-Ray Tube Current")
-                    .flatMap(Dicom::floatingPoint)
+            event.setVoltagePeak(irradiationEvent
+                    .medianFloatingPoint("KVP")
                     .orElse(null));
 
-            if (instance.getTubeCurrent() == null) {
-                instance.setTubeCurrent(irradiationEvent
+            event.setTubeCurrent(irradiationEvent
+                    .medianFloatingPoint("X-Ray Tube Current")
+                    .orElse(null));
+
+            if (event.getTubeCurrent() == null) {
+                event.setTubeCurrent(irradiationEvent
                         .first("Average X-Ray Tube Current")
                         .flatMap(Dicom::floatingPoint)
                         .orElse(null));
             }
             // todo not sure
-            if (instance.getTubeCurrent() == null) {
-                instance.setTubeCurrent(irradiationEvent
+            if (event.getTubeCurrent() == null) {
+                event.setTubeCurrent(irradiationEvent
                         .first("mA")
                         .flatMap(Dicom::floatingPoint)
                         .orElse(null));
@@ -144,40 +161,50 @@ public class InstanceMapper {
             // todo mammography maybe report all filters used or just the dominant one because there wont be any else in 99.9% cases or is irrelevant
             // todo pulse width is pulse time (ms) used for mammo
 
-            instance.setTubeCurrentTime(irradiationEvent
-                    .first("Exposure")
-                    .flatMap(Dicom::floatingPoint)
+            event.setTubeCurrentTime(irradiationEvent
+                    .medianFloatingPoint("Exposure")
                     .orElse(null));
 
-            instance.setDoseAreaProduct(irradiationEvent
+            event.setDoseAreaProduct(irradiationEvent
                     .first("Dose Area Product")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setDoseReferencePoint(irradiationEvent
+            event.setDoseReferencePoint(irradiationEvent
                     .first("Dose (RP)")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
             // todo not sure
-            instance.setDoseOrgan(irradiationEvent
+            event.setDoseOrgan(irradiationEvent
                     .first("OrganDose")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setCompressionThickness(irradiationEvent
+            event.setCompressionThickness(irradiationEvent
                     .first("Compression Thickness")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instances.add(instance);
+            event.setMaterialTarget(irradiationEvent
+                    .first("Anode Target Material")
+                    .flatMap(Dicom::material)
+                    .orElse(null));
+
+            event.setMaterialFilter(irradiationEvent
+                    .first("X-Ray Filters")
+                    .flatMap(d -> d.first("X-Ray Filter Material"))
+                    .flatMap(Dicom::material)
+                    .orElse(null));
+
+            events.add(event);
         }
 
-        return instances;
+        return events;
     }
 
-    public List<Instance> mapComputedTomographyAcquisition(Dicom dicom) {
-        List<Instance> instances = new ArrayList<>();
+    public List<Event> mapComputedTomographyAcquisition(Dicom dicom) {
+        List<Event> events = new ArrayList<>();
 
         List<Dicom> computedTomographyAcquisitions = dicom
                 .first("ContentSequence")
@@ -185,108 +212,108 @@ public class InstanceMapper {
                 .orElse(Collections.emptyList());
 
         if (computedTomographyAcquisitions.isEmpty()) {
-            return instances;
+            return events;
         }
 
         for (Dicom computedTomographyAcquisition : computedTomographyAcquisitions) {
-            Instance instance = new Instance();
+            Event event = new Event();
 
-            instance.setEventId(computedTomographyAcquisition
+            event.setExternalId(computedTomographyAcquisition
                     .first("Irradiation Event UID")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setComment(computedTomographyAcquisition
+            event.setComment(computedTomographyAcquisition
                     .first("Comment")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setProtocol(computedTomographyAcquisition
+            event.setProtocol(computedTomographyAcquisition
                     .first("Acquisition Protocol")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setType(computedTomographyAcquisition
+            event.setType(computedTomographyAcquisition
                     .first("CT Acquisition Type")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setRegion(computedTomographyAcquisition
+            event.setRegion(computedTomographyAcquisition
                     .first("Target Region")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setExposureTime(computedTomographyAcquisition
+            event.setExposureTime(computedTomographyAcquisition
                     .first("CT Acquisition Parameters")
                     .flatMap(d -> d.first("Exposure Time"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setExposureTimeRotation(computedTomographyAcquisition
+            event.setExposureTimeRotation(computedTomographyAcquisition
                     .first("CT Acquisition Parameters")
                     .flatMap(d -> d.first("CT X-Ray Source Parameters"))
                     .flatMap(d -> d.first("Exposure Time per Rotation"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setScanningLength(computedTomographyAcquisition
+            event.setScanningLength(computedTomographyAcquisition
                     .first("CT Acquisition Parameters")
                     .flatMap(d -> d.first("Scanning Length"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setVoltagePeak(computedTomographyAcquisition
+            event.setVoltagePeak(computedTomographyAcquisition
                     .first("CT Acquisition Parameters")
                     .flatMap(d -> d.first("CT X-Ray Source Parameters"))
                     .flatMap(d -> d.first("KVP"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setTubeCurrent(computedTomographyAcquisition
+            event.setTubeCurrent(computedTomographyAcquisition
                     .first("CT Acquisition Parameters")
                     .flatMap(d -> d.first("CT X-Ray Source Parameters"))
                     .flatMap(d -> d.first("X-Ray Tube Current"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setTubeCurrentPeak(computedTomographyAcquisition
+            event.setTubeCurrentPeak(computedTomographyAcquisition
                     .first("CT Acquisition Parameters")
                     .flatMap(d -> d.first("CT X-Ray Source Parameters"))
                     .flatMap(d -> d.first("Maximum X-ray Tube Current"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setDoseLengthProduct(computedTomographyAcquisition
+            event.setDoseLengthProduct(computedTomographyAcquisition
                     .first("CT Dose")
                     .flatMap(d -> d.first("DLP"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setDoseIndexVolume(computedTomographyAcquisition
+            event.setDoseIndexVolume(computedTomographyAcquisition
                     .first("CT Dose")
                     .flatMap(d -> d.first("Mean CTDIvol"))
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instance.setModulation(computedTomographyAcquisition
+            event.setModulation(computedTomographyAcquisition
                     .first("Dose Reduce Parameters")
                     .flatMap(d -> d.first("Modulation"))
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setModulation(computedTomographyAcquisition
+            event.setModulation(computedTomographyAcquisition
                     .first("X-Ray Modulation Type")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instances.add(instance);
+            events.add(event);
         }
 
-        return instances;
+        return events;
     }
 
-    public List<Instance> mapOrganDose(Dicom dicom) {
-        List<Instance> instances = new ArrayList<>();
+    public List<Event> mapOrganDose(Dicom dicom) {
+        List<Event> events = new ArrayList<>();
 
         List<Dicom> organDoses = dicom
                 .first("ContentSequence")
@@ -295,30 +322,30 @@ public class InstanceMapper {
                 .orElse(Collections.emptyList());
 
         if (organDoses.isEmpty()) {
-            return instances;
+            return events;
         }
 
         for (Dicom organDose : organDoses) {
-            Instance instance = new Instance();
+            Event event = new Event();
 
-            instance.setAnatomy(organDose
+            event.setAnatomy(organDose
                     .first("Finding Site")
                     .flatMap(Dicom::string)
                     .orElse(null));
 
-            instance.setLaterality(organDose
+            event.setLaterality(organDose
                     .first("Laterality")
                     .flatMap(Dicom::laterality)
                     .orElse(null));
 
-            instance.setDoseOrgan(organDose
+            event.setDoseOrgan(organDose
                     .first("Organ Dose")
                     .flatMap(Dicom::floatingPoint)
                     .orElse(null));
 
-            instances.add(instance);
+            events.add(event);
         }
 
-        return instances;
+        return events;
     }
 }

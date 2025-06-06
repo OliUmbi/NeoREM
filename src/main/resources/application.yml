@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlite:data/neorem.db
+    url: jdbc:sqlite:data/neorem.db?foreign_keys=on
     driver-class-name: org.sqlite.JDBC
   jpa:
     hibernate:

@@ -1,7 +1,7 @@
 package ch.oliumbi.neorem.ingest;
 
 import ch.oliumbi.neorem.entities.Device;
-import ch.oliumbi.neorem.entities.Instance;
+import ch.oliumbi.neorem.entities.Event;
 import ch.oliumbi.neorem.entities.Patient;
 import ch.oliumbi.neorem.entities.Study;
 import org.dcm4che3.data.Attributes;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Component
@@ -26,13 +24,13 @@ public class Ingest {
     private final PatientMapper patientMapper;
     private final DeviceMapper deviceMapper;
     private final StudyMapper studyMapper;
-    private final InstanceMapper instanceMapper;
+    private final EventMapper eventMapper;
 
-    public Ingest(PatientMapper patientMapper, DeviceMapper deviceMapper, StudyMapper studyMapper, InstanceMapper instanceMapper) {
+    public Ingest(PatientMapper patientMapper, DeviceMapper deviceMapper, StudyMapper studyMapper, EventMapper eventMapper) {
         this.patientMapper = patientMapper;
         this.deviceMapper = deviceMapper;
         this.studyMapper = studyMapper;
-        this.instanceMapper = instanceMapper;
+        this.eventMapper = eventMapper;
     }
 
     /*
@@ -94,8 +92,8 @@ public class Ingest {
     }
 
     public static void main(String[] args) throws Exception {
-        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new InstanceMapper());
-        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\mg\\MG-RDSR-GEPristina-DBT.dcm"));
+        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new EventMapper());
+        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\rg\\DX-RDSR-Canon_CXDI.dcm"));
     }
 
     public void ingest(File file) {
@@ -111,13 +109,15 @@ public class Ingest {
             Dicom dicom = parse(attributes);
 
 
-            Patient patient = patientMapper.map(new Patient(), dicom);
-            Device device = deviceMapper.map(new Device(), dicom);
-            Study study = studyMapper.map(new Study(), dicom);
-            List<Instance> instances = instanceMapper.mapIrradiationEvent(dicom);
+            Patient patient = patientMapper.map(dicom);
+            Device device = deviceMapper.map(dicom);
+            Study study = studyMapper.map(dicom);
+            List<Event> events = eventMapper.mapIrradiationEvent(dicom);
 
             System.out.println(dicom);
             // differentiate by Modality, ModalitiesInStudy, PerformedProcedureCodeSequence.CodeMeaning, Procedure reported
+
+            System.out.println("asdf");
 
         } catch (IOException e) {
             // todo handle input stream exception / reading attributes

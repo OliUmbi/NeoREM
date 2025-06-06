@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeviceMapper {
 
-    public Device map(Device device, Dicom dicom) {
+    public Device map(Dicom dicom) {
+
+        Device device = new Device();
+
         device.setManufacturer(dicom
                 .first("Manufacturer")
                 .flatMap(Dicom::string)

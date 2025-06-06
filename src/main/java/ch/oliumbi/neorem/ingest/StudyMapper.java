@@ -11,15 +11,17 @@ import java.util.List;
 @Component
 public class StudyMapper {
 
-    public Study map(Study study, Dicom dicom) {
+    public Study map(Dicom dicom) {
+
+        Study study = new Study();
 
         study.setModality(dicom
                 .first("Modality")
                 .flatMap(Dicom::string)
                 .orElse(null));
 
-        study.setInstanceId(dicom
-                .first("SOPInstanceUID")
+        study.setExternalId(dicom
+                .first("StudyInstanceUID")
                 .flatMap(Dicom::string)
                 .orElse(null));
 
@@ -38,11 +40,17 @@ public class StudyMapper {
                 .flatMap(Dicom::localTime)
                 .orElse(null));
 
-        // todo fallback to series description
         study.setDescription(dicom
                 .first("StudyDescription")
                 .flatMap(Dicom::string)
                 .orElse(null));
+
+        if (study.getDescription() == null) {
+            study.setDescription(dicom
+                    .first("SeriesDescription")
+                    .flatMap(Dicom::string)
+                    .orElse(null));
+        }
 
         study.setReason(dicom
                 .first("ContentSequence")
@@ -51,12 +59,12 @@ public class StudyMapper {
                 .flatMap(Dicom::string)
                 .orElse(null));
 
-        study.setRequestedProcedure(dicom
+        study.setProcedureRequested(dicom
                 .first("RequestedProcedureDescription")
                 .flatMap(Dicom::string)
                 .orElse(null));
 
-        study.setPerformedProcedure(dicom
+        study.setProcedurePerformed(dicom
                 .first("PerformedProcedureStepDescription")
                 .flatMap(Dicom::string)
                 .orElse(null));
@@ -118,31 +126,41 @@ public class StudyMapper {
                 .flatMap(Dicom::string)
                 .orElse(null));
 
-        study.setEvents(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("CT Accumulated Dose Data"))
-                .flatMap(d -> d.first("Total Number of Irradiation Events"))
-                .flatMap(Dicom::integer)
-                .orElse(null));
-        // todo choose strategy depending on set value
-        study.setEvents(dicom
+        if (study.getComment() == null) {
+            study.setComment(dicom
+                    .first("ContentSequence")
+                    .flatMap(d -> d.first("Comment"))
+                    .flatMap(Dicom::string)
+                    .orElse(null));
+        }
+
+        if (study.getComment() == null) {
+            study.setComment(dicom
+                    .first("PatientComments")
+                    .flatMap(Dicom::string)
+                    .orElse(null));
+        }
+
+        study.setEventsAmount(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
                 .flatMap(d -> d.first("Total Number of Radiographic Frames"))
                 .flatMap(Dicom::integer)
                 .orElse(null));
 
+        if (study.getEventsAmount() == null) {
+            study.setEventsAmount(dicom
+                    .first("ContentSequence")
+                    .flatMap(d -> d.first("CT Accumulated Dose Data"))
+                    .flatMap(d -> d.first("Total Number of Irradiation Events"))
+                    .flatMap(Dicom::integer)
+                    .orElse(null));
+        }
+
         study.setDoseLengthProduct(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("CT Accumulated Dose Data"))
                 .flatMap(d -> d.first("CT Dose Length Product Total"))
-                .flatMap(Dicom::floatingPoint)
-                .orElse(null));
-
-        study.setDoseAreaProduct(dicom
-                .first("ContentSequence")
-                .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
-                .flatMap(d -> d.first("Dose Area Product Total"))
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
@@ -215,6 +233,15 @@ public class StudyMapper {
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
+        if (study.getDoseReferencePointTotal() == null) {
+            study.setDoseReferencePointTotal(dicom
+                    .first("ContentSequence")
+                    .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                    .flatMap(d -> d.first("Dose(RP) Total"))
+                    .flatMap(Dicom::floatingPoint)
+                    .orElse(null));
+        }
+
         study.setDoseReferencePointFluoroscopy(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
@@ -222,12 +249,30 @@ public class StudyMapper {
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
 
+        if (study.getDoseReferencePointFluoroscopy() == null) {
+            study.setDoseReferencePointFluoroscopy(dicom
+                    .first("ContentSequence")
+                    .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                    .flatMap(d -> d.first("Fluoro Dose(RP) Total"))
+                    .flatMap(Dicom::floatingPoint)
+                    .orElse(null));
+        }
+
         study.setDoseReferencePointAcquisition(dicom
                 .first("ContentSequence")
                 .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
                 .flatMap(d -> d.first("Acquisition Dose (RP) Total"))
                 .flatMap(Dicom::floatingPoint)
                 .orElse(null));
+
+        if (study.getDoseReferencePointAcquisition() == null) {
+            study.setDoseReferencePointAcquisition(dicom
+                    .first("ContentSequence")
+                    .flatMap(d -> d.first("Accumulated X-Ray Dose Data"))
+                    .flatMap(d -> d.first("Acquisition Dose(RP) Total"))
+                    .flatMap(Dicom::floatingPoint)
+                    .orElse(null));
+        }
 
         study.setPharmaceuticalAgent(dicom
                 .first("ContentSequence")

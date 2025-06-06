@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 public class Dicom extends ArrayList<Dicom> {
 
@@ -77,6 +74,33 @@ public class Dicom extends ArrayList<Dicom> {
         }
     }
 
+    public Optional<Double> medianFloatingPoint(String name) {
+        if (value == null) {
+            return Optional.empty();
+        }
+
+        List<Double> doubles = new ArrayList<>();
+
+        for (Dicom dicom : all(name)) {
+            dicom.floatingPoint().ifPresent(doubles::add);
+        }
+
+        if (doubles.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Collections.sort(doubles);
+
+        if (doubles.size() % 2 == 0) {
+            Double lower = doubles.get(doubles.size() / 2 - 1);
+            Double upper = doubles.get(doubles.size() / 2);
+
+            return Optional.of((lower + upper) / 2);
+        }
+
+        return Optional.of(doubles.get(doubles.size() / 2));
+    }
+
     public Optional<LocalDate> localDate() {
         if (value == null) {
             return Optional.empty();
@@ -95,14 +119,7 @@ public class Dicom extends ArrayList<Dicom> {
         }
 
         try {
-            DateTimeFormatter timeFormatter;
-            if (value.contains(".")) {
-                timeFormatter = DateTimeFormatter.ofPattern("HHmmss.SSSSSS");
-            } else {
-                timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
-            }
-
-            return Optional.of(LocalTime.parse(value, timeFormatter));
+            return Optional.of(LocalTime.parse(value.split("\\.")[0], DateTimeFormatter.ofPattern("HHmmss")));
         } catch (DateTimeParseException dateTimeParseException) {
             return Optional.empty();
         }
@@ -114,14 +131,7 @@ public class Dicom extends ArrayList<Dicom> {
         }
 
         try {
-            DateTimeFormatter timeFormatter;
-            if (value.contains(".")) {
-                timeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss.SSSSSS");
-            } else {
-                timeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            }
-
-            return Optional.of(LocalDateTime.parse(value, timeFormatter));
+            return Optional.of(LocalDateTime.parse(value.split("\\.")[0], DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
         } catch (DateTimeParseException dateTimeParseException) {
             return Optional.empty();
         }
@@ -146,6 +156,19 @@ public class Dicom extends ArrayList<Dicom> {
         };
     }
 
+
+    public Optional<String> material() {
+        return switch (value) {
+            case "Rhodium or Rhodium compound" -> Optional.of("Rhodium");
+            case "Silver or Silver compound" -> Optional.of("Silver");
+            case "Molybdenum or Molybdenum compound" -> Optional.of("Molybdenum");
+            case "Aluminum or Aluminum compound", "Aluminium or Aluminium Compound" -> Optional.of("Aluminum");
+            case "Tungsten or Tungsten compound" -> Optional.of("Tungsten");
+            case null -> Optional.empty();
+            default -> Optional.of(value);
+        };
+    }
+
     public Optional<Integer> height() {
         return floatingPoint().map(height -> (int) Math.round(height + 100));
     }
@@ -156,7 +179,7 @@ public class Dicom extends ArrayList<Dicom> {
         }
 
         try {
-            return Optional.of(Integer.parseInt(value.substring(0, 3)));
+            return Optional.of(Integer.parseInt(value.replace("Y", "")));
         } catch (NumberFormatException e) {
             return Optional.empty();
         }

@@ -1,7 +1,7 @@
-CREATE TABLE instances (
+CREATE TABLE events (
     id                        BLOB  NOT NUll,
     studies_id                BLOB  NOT NUll,
-    event_id                  TEXT  NUll,
+    external_id               TEXT  NUll,
     modality                  TEXT  NUll,
     comment                   TEXT  NUll,
     date                      TEXT  NUll,
@@ -31,8 +31,10 @@ CREATE TABLE instances (
     dose_organ                REAL  NUll,
     modulation                TEXT  NUll,
     compression_thickness     REAL  NUll,
+    material_target           TEXT  NUll,
+    material_filter           TEXT  NUll,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (studies_id) REFERENCES studies (id),
-    UNIQUE (event_id)
+    FOREIGN KEY (studies_id) REFERENCES studies (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE (external_id)
 );

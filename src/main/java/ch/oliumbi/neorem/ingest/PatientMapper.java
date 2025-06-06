@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PatientMapper {
 
-    public Patient map(Patient patient, Dicom dicom) {
+    public Patient map(Dicom dicom) {
+
+        Patient patient = new Patient();
+
         patient.setExternalId(dicom
                 .first("PatientID")
                 .flatMap(Dicom::string)
