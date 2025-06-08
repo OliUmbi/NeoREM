@@ -14,16 +14,16 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "events")
 public class Event {
 
-    // todo review columndefinition blob maybe not needed
     @Id
-    @Column(name = "id", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "studies_id", referencedColumnName = "id")
-    private Study study;
+    @Column(name = "study_id")
+    private UUID studyId;
 
     @Column(name = "external_id")
     private String externalId;
@@ -122,8 +122,10 @@ public class Event {
     @Column(name = "material_filter")
     private String materialFilter;
 
-    public void merge(Event other) {
-        if (other == null) return;
+    public Event merge(Event other) {
+        if (other == null) {
+            return this;
+        }
 
         if (other.externalId != null) externalId = other.externalId;
         if (other.modality != null) modality = other.modality;
@@ -157,5 +159,7 @@ public class Event {
         if (other.compressionThickness != null) compressionThickness = other.compressionThickness;
         if (other.materialTarget != null) materialTarget = other.materialTarget;
         if (other.materialFilter != null) materialFilter = other.materialFilter;
+
+        return this;
     }
 }

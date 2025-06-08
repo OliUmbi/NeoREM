@@ -8,9 +8,9 @@ CREATE TABLE users (
 );
 
 CREATE TABLE users_roles (
-    users_id  BLOB  NOT NULL,
+    user_id   BLOB  NOT NULL,
     role      TEXT  NOT NULL,
 
-    PRIMARY KEY (users_id, role),
-    FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
+    PRIMARY KEY (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

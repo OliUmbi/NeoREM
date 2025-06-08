@@ -17,7 +17,7 @@ public class StudyMapper {
 
         study.setModality(dicom
                 .first("Modality")
-                .flatMap(Dicom::string)
+                .flatMap(Dicom::modality)
                 .orElse(null));
 
         study.setExternalId(dicom

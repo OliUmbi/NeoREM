@@ -1,7 +1,7 @@
 CREATE TABLE studies (
     id                                BLOB     NOT NULL,
-    patients_id                       BLOB     NULL,
-    devices_id                        BLOB     NULL,
+    patient_id                        BLOB     NULL,
+    device_id                         BLOB     NULL,
     external_id                       TEXT     NULL,
     accession_id                      TEXT     NULL,
     modality                          TEXT     NULL,
@@ -46,7 +46,5 @@ CREATE TABLE studies (
     pharmaceutical_comment            TEXT     NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (patients_id) REFERENCES patients (id) ON DELETE SET NULL ON UPDATE SET NULL,
-    FOREIGN KEY (devices_id) REFERENCES devices (id) ON DELETE SET NULL ON UPDATE SET NULL,
     UNIQUE (external_id)
 );

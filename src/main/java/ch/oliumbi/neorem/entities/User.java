@@ -16,7 +16,7 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @Column(name = "id", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -25,7 +25,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    // todo remove cascade to have same behaviour everywhere
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "users_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Set<UserRole> roles = new HashSet<>();
 }

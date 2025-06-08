@@ -8,8 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -21,16 +19,14 @@ import java.util.UUID;
 public class Study {
 
     @Id
-    @Column(name = "id", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "patients_id", referencedColumnName = "id")
-    private Patient patient;
+    @Column(name = "patient_id")
+    private UUID patientId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "devices_id", referencedColumnName = "id")
-    private Device device;
+    @Column(name = "device_id")
+    private UUID deviceId;
 
     @Column(name = "external_id")
     private String externalId;
@@ -158,12 +154,10 @@ public class Study {
     @Column(name = "pharmaceutical_comment")
     private String pharmaceuticalComment;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "studies_id", referencedColumnName = "id")
-    private Set<Event> events = new HashSet<>();
-
-    public void merge(Study other) {
-        if (other == null) return;
+    public Study merge(Study other) {
+        if (other == null) {
+            return this;
+        }
 
         if (other.externalId != null) externalId = other.externalId;
         if (other.accessionId != null) accessionId = other.accessionId;
@@ -198,5 +192,7 @@ public class Study {
         if (other.doseReferencePointTotal != null) doseReferencePointTotal = other.doseReferencePointTotal;
         if (other.doseReferencePointFluoroscopy != null) doseReferencePointFluoroscopy = other.doseReferencePointFluoroscopy;
         if (other.doseReferencePointAcquisition != null) doseReferencePointAcquisition = other.doseReferencePointAcquisition;
+
+        return this;
     }
 }

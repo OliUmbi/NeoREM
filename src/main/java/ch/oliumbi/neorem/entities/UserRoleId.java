@@ -14,7 +14,7 @@ import java.util.UUID;
 @Embeddable
 public class UserRoleId implements Serializable {
 
-    @Column(name = "users_id", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
 
     @Column(name = "role", nullable = false)

@@ -21,7 +21,7 @@ public class Device {
     // todo maybe check if device infos even exist or if it is just empty
 
     @Id
-    @Column(name = "id", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "manufacturer")
@@ -36,16 +36,16 @@ public class Device {
     @Column(name = "software")
     private String software;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "devices_id", referencedColumnName = "id")
-    private Set<Study> studies = new HashSet<>();
-
-    public void merge(Device other) {
-        if (other == null) return;
+    public Device merge(Device other) {
+        if (other == null) {
+            return this;
+        }
 
         if (other.manufacturer != null) manufacturer = other.manufacturer;
         if (other.model != null) model = other.model;
         if (other.serial != null) serial = other.serial;
         if (other.software != null) software = other.software;
+
+        return this;
     }
 }

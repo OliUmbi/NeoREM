@@ -4,6 +4,11 @@ import ch.oliumbi.neorem.entities.Device;
 import ch.oliumbi.neorem.entities.Event;
 import ch.oliumbi.neorem.entities.Patient;
 import ch.oliumbi.neorem.entities.Study;
+import ch.oliumbi.neorem.repositories.DeviceRepository;
+import ch.oliumbi.neorem.repositories.EventRepository;
+import ch.oliumbi.neorem.repositories.PatientRepository;
+import ch.oliumbi.neorem.repositories.StudyRepository;
+import jakarta.transaction.Transactional;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.ElementDictionary;
 import org.dcm4che3.data.Sequence;
@@ -25,12 +30,20 @@ public class Ingest {
     private final DeviceMapper deviceMapper;
     private final StudyMapper studyMapper;
     private final EventMapper eventMapper;
+    private final PatientRepository patientRepository;
+    private final DeviceRepository deviceRepository;
+    private final StudyRepository studyRepository;
+    private final EventRepository eventRepository;
 
-    public Ingest(PatientMapper patientMapper, DeviceMapper deviceMapper, StudyMapper studyMapper, EventMapper eventMapper) {
+    public Ingest(PatientMapper patientMapper, DeviceMapper deviceMapper, StudyMapper studyMapper, EventMapper eventMapper, PatientRepository patientRepository, DeviceRepository deviceRepository, StudyRepository studyRepository, EventRepository eventRepository) {
         this.patientMapper = patientMapper;
         this.deviceMapper = deviceMapper;
         this.studyMapper = studyMapper;
         this.eventMapper = eventMapper;
+        this.patientRepository = patientRepository;
+        this.deviceRepository = deviceRepository;
+        this.studyRepository = studyRepository;
+        this.eventRepository = eventRepository;
     }
 
     /*
@@ -91,11 +104,7 @@ public class Ingest {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        Ingest ingest = new Ingest(new PatientMapper(), new DeviceMapper(), new StudyMapper(), new EventMapper());
-        ingest.ingest(new File("C:\\Users\\ksaolumb\\projects\\NeoREM\\src\\main\\resources\\rg\\DX-RDSR-Canon_CXDI.dcm"));
-    }
-
+    @Transactional
     public void ingest(File file) {
 
         if (!file.exists()) {
@@ -108,20 +117,77 @@ public class Ingest {
 
             Dicom dicom = parse(attributes);
 
-
             Patient patient = patientMapper.map(dicom);
             Device device = deviceMapper.map(dicom);
             Study study = studyMapper.map(dicom);
-            List<Event> events = eventMapper.mapIrradiationEvent(dicom);
+            List<Event> events = new ArrayList<>();
+            events.addAll(eventMapper.mapIrradiationEvent(dicom));
+            events.addAll(eventMapper.mapComputedTomographyAcquisition(dicom));
+            events.addAll(eventMapper.mapOrganDose(dicom));
 
-            System.out.println(dicom);
-            // differentiate by Modality, ModalitiesInStudy, PerformedProcedureCodeSequence.CodeMeaning, Procedure reported
+            patient.setId(UUID.randomUUID());
+            device.setId(UUID.randomUUID());
+            study.setId(UUID.randomUUID());
+            for (Event event : events) {
+                event.setId(UUID.randomUUID());
+            }
 
-            System.out.println("asdf");
+            if (patient.getExternalId() != null) {
+                Optional<Patient> oldPatient = patientRepository.findByExternalId(patient.getExternalId());
+                if (oldPatient.isPresent()) {
+                    patient = oldPatient.get().merge(patient);
+                }
+            }
+
+            if (!(device.getManufacturer() == null && device.getModel() == null && device.getSerial() == null && device.getSoftware() == null)) {
+                Optional<Device> oldDevice = deviceRepository.findByManufacturerAndModelAndSerialAndSoftware(device.getManufacturer(), device.getModel(), device.getSerial(), device.getSoftware());
+                if (oldDevice.isPresent()) {
+                    device = oldDevice.get().merge(device);
+                }
+            }
+
+            if (study.getExternalId() != null) {
+                Optional<Study> oldStudy = studyRepository.findByExternalId(study.getExternalId());
+                if (oldStudy.isPresent()) {
+                    study = oldStudy.get().merge(study);
+                }
+            }
+
+            for (int i = 0; i < events.size(); i++) {
+                if (events.get(i).getExternalId() != null) {
+                    Optional<Event> oldEvent = eventRepository.findByExternalId(events.get(i).getExternalId());
+                    if (oldEvent.isPresent()) {
+                        events.set(i, oldEvent.get().merge(events.get(i)));
+                    }
+                }
+            }
+
+            study.setPatientId(patient.getId());
+            study.setDeviceId(device.getId());
+            for (Event event : events) {
+                event.setStudyId(study.getId());
+            }
+
+            patientRepository.save(patient);
+            patientRepository.flush();
+
+            deviceRepository.save(device);
+            deviceRepository.flush();
+
+            System.out.println(study.getId());
+
+            studyRepository.save(study);
+            studyRepository.flush();
+
+            events.stream().map(Event::getStudyId).forEach(System.out::println);
+
+            eventRepository.saveAll(events);
+            eventRepository.flush();
 
         } catch (IOException e) {
             // todo handle input stream exception / reading attributes
-            throw new RuntimeException(e);
+            System.out.println(file.getName());
+            e.printStackTrace();
         }
     }
 

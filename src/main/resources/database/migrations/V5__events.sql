@@ -1,6 +1,6 @@
 CREATE TABLE events (
     id                        BLOB  NOT NUll,
-    studies_id                BLOB  NOT NUll,
+    study_id                  BLOB  NOT NUll,
     external_id               TEXT  NUll,
     modality                  TEXT  NUll,
     comment                   TEXT  NUll,
@@ -35,6 +35,5 @@ CREATE TABLE events (
     material_filter           TEXT  NUll,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (studies_id) REFERENCES studies (id) ON DELETE CASCADE ON UPDATE CASCADE,
     UNIQUE (external_id)
 );
