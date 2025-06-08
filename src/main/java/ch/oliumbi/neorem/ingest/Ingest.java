@@ -174,12 +174,8 @@ public class Ingest {
             deviceRepository.save(device);
             deviceRepository.flush();
 
-            System.out.println(study.getId());
-
             studyRepository.save(study);
             studyRepository.flush();
-
-            events.stream().map(Event::getStudyId).forEach(System.out::println);
 
             eventRepository.saveAll(events);
             eventRepository.flush();

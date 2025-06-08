@@ -17,7 +17,7 @@ public class IngestTest {
         this.ingest = ingest;
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void test() throws Exception {
         List<String> folders = List.of("/ct", "/fl", "/mg", "/nm", "/rg");
 
