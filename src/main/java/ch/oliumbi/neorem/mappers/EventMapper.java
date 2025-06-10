@@ -1,6 +1,7 @@
-package ch.oliumbi.neorem.ingest;
+package ch.oliumbi.neorem.mappers;
 
 import ch.oliumbi.neorem.entities.Event;
+import ch.oliumbi.neorem.ingest.Dicom;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

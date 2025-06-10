@@ -1,6 +1,7 @@
-package ch.oliumbi.neorem.ingest;
+package ch.oliumbi.neorem.mappers;
 
 import ch.oliumbi.neorem.entities.Device;
+import ch.oliumbi.neorem.ingest.Dicom;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,6 +1,5 @@
 package ch.oliumbi.neorem.ingest;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
