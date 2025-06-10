@@ -18,7 +18,7 @@ public class StudySpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             if (StringUtils.hasText(accessionId)) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("accession_id")), "%" + accessionId.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("accessionId")), "%" + accessionId.toLowerCase() + "%"));
             }
 
             if (StringUtils.hasText(modality)) {

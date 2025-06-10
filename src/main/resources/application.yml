@@ -25,7 +25,10 @@ springdoc:
 security:
   jwt:
     secret: replace_with_random_32_characters
-    expiration: 3600000
+    expiration: 8
+
+scheduler:
+  thread-pool: 5
 
 dicom:
   local:

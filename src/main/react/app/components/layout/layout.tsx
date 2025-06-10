@@ -48,7 +48,7 @@ const Layout = () => {
                         <HeaderGlobalAction onClick={() => navigate("/users")} aria-label="users">
                             <UserMultiple/>
                         </HeaderGlobalAction>
-                        <HeaderGlobalAction onClick={() => navigate("/configurations")} aria-label="Configurations">
+                        <HeaderGlobalAction onClick={() => navigate("/settings")} aria-label="Settings">
                             <Settings/>
                         </HeaderGlobalAction>
                         <HeaderGlobalAction onClick={() => navigate("/user")} aria-label="User">

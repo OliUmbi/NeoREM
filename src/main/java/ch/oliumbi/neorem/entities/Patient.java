@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +33,9 @@ public class Patient {
 
     @Column(name = "sex")
     private String sex;
+
+    @Transient
+    private List<Study> studies;
 
     public Patient merge(Patient other) {
         if (other == null) {

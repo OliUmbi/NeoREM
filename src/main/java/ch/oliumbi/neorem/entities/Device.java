@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,6 +36,9 @@ public class Device {
 
     @Column(name = "software")
     private String software;
+
+    @Transient
+    private List<Study> studies;
 
     public Device merge(Device other) {
         if (other == null) {

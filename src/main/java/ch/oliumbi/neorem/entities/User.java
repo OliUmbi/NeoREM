@@ -25,7 +25,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    // todo remove cascade to have same behaviour everywhere
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Set<UserRole> roles = new HashSet<>();

@@ -11,6 +11,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +44,7 @@ public class SecurityJWT {
             String token = JWT.create()
                     .withSubject(user.getId().toString())
                     .withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + securityProperties.getJwt().getExpiration()))
+                    .withExpiresAt(Instant.from(LocalDateTime.now().plusHours(securityProperties.getJwt().getExpiration())))
                     .withClaim("name", user.getName())
                     .withArrayClaim("roles", roles)
                     .sign(algorithm);

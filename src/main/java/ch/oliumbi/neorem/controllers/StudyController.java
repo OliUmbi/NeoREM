@@ -18,7 +18,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("study")
+@RequestMapping("Study")
 public class StudyController {
 
     private final StudyService studyService;
@@ -46,26 +46,5 @@ public class StudyController {
         return studyService.all(pageable, accessionId, modality, from, to, description);
     }
 
-    // todo maybe remove
-    @Data
-    public static class AllResponse {
-        private UUID id;
-        private UUID patientId;
-        private UUID deviceId;
-        private String accessionId;
-        private String modality;
-        private LocalDate date;
-        private LocalTime time;
-        private String description;
-        private String institution;
-        private String department;
-        private String station;
-        private Integer eventsAmount;
-        private Double averageGlandularDoseLeft;
-        private Double averageGlandularDoseRight;
-        private Double durationTotal;
-        private Double doseLengthProduct;
-        private Double doseAreaProductTotal;
-        private Double doseReferencePointTotal;
-    }
+    // todo delete
 }
