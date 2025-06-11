@@ -1,11 +1,7 @@
 package ch.oliumbi.neorem.services;
 
 import ch.oliumbi.neorem.entities.Job;
-import ch.oliumbi.neorem.entities.Notification;
 import ch.oliumbi.neorem.repositories.JobRepository;
-import ch.oliumbi.neorem.repositories.SettingRepository;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

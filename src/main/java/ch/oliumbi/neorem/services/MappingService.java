@@ -1,6 +1,5 @@
 package ch.oliumbi.neorem.services;
 
-import ch.oliumbi.neorem.repositories.JobRepository;
 import ch.oliumbi.neorem.repositories.MappingRepository;
 import org.springframework.stereotype.Service;
 

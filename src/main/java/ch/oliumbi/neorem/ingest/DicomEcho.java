@@ -1,7 +1,5 @@
 package ch.oliumbi.neorem.ingest;
 
-import java.util.concurrent.Executors;
-
 import org.dcm4che3.data.UID;
 import org.dcm4che3.net.ApplicationEntity;
 import org.dcm4che3.net.Association;
@@ -9,6 +7,8 @@ import org.dcm4che3.net.Connection;
 import org.dcm4che3.net.Device;
 import org.dcm4che3.net.pdu.AAssociateRQ;
 import org.dcm4che3.net.pdu.PresentationContext;
+
+import java.util.concurrent.Executors;
 
 public class DicomEcho {
 

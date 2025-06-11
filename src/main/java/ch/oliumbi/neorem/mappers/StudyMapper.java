@@ -1,6 +1,6 @@
 package ch.oliumbi.neorem.mappers;
 
-import ch.oliumbi.neorem.entities.*;
+import ch.oliumbi.neorem.entities.Study;
 import ch.oliumbi.neorem.ingest.Dicom;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

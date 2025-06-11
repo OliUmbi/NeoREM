@@ -3,7 +3,6 @@ package ch.oliumbi.neorem.database;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Converter(autoApply = true)

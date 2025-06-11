@@ -1,15 +1,12 @@
 package ch.oliumbi.neorem.services;
 
 import ch.oliumbi.neorem.entities.Notification;
-import ch.oliumbi.neorem.repositories.JobRepository;
 import ch.oliumbi.neorem.repositories.NotificationRepository;
 import ch.oliumbi.neorem.specifications.NotificationSpecification;
-import ch.oliumbi.neorem.specifications.PatientSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service

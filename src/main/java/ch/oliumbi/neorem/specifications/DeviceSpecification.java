@@ -1,7 +1,6 @@
 package ch.oliumbi.neorem.specifications;
 
 import ch.oliumbi.neorem.entities.Device;
-import ch.oliumbi.neorem.entities.Study;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;

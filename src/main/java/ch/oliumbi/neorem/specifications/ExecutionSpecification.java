@@ -1,12 +1,10 @@
 package ch.oliumbi.neorem.specifications;
 
 import ch.oliumbi.neorem.entities.Execution;
-import ch.oliumbi.neorem.entities.Study;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

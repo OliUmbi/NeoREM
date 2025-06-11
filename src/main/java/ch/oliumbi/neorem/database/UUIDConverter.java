@@ -4,7 +4,6 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 import java.nio.ByteBuffer;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Converter(autoApply = true)

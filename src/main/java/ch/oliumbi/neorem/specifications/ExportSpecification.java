@@ -1,6 +1,5 @@
 package ch.oliumbi.neorem.specifications;
 
-import ch.oliumbi.neorem.entities.Execution;
 import ch.oliumbi.neorem.entities.Export;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -9,7 +8,6 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ExportSpecification {
 

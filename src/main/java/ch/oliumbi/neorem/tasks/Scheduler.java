@@ -1,7 +1,6 @@
 package ch.oliumbi.neorem.tasks;
 
 import ch.oliumbi.neorem.properties.SchedulerProperties;
-import ch.oliumbi.neorem.services.SchedulerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;

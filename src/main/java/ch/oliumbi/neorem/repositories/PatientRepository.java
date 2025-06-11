@@ -1,7 +1,6 @@
 package ch.oliumbi.neorem.repositories;
 
 import ch.oliumbi.neorem.entities.Patient;
-import ch.oliumbi.neorem.entities.Study;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

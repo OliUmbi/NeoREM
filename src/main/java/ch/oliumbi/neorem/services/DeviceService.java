@@ -1,12 +1,9 @@
 package ch.oliumbi.neorem.services;
 
 import ch.oliumbi.neorem.entities.Device;
-import ch.oliumbi.neorem.entities.Patient;
 import ch.oliumbi.neorem.repositories.DeviceRepository;
-import ch.oliumbi.neorem.repositories.PatientRepository;
 import ch.oliumbi.neorem.repositories.StudyRepository;
 import ch.oliumbi.neorem.specifications.DeviceSpecification;
-import ch.oliumbi.neorem.specifications.PatientSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
