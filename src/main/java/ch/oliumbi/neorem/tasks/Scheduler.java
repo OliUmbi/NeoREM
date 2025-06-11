@@ -21,9 +21,9 @@ public class Scheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
 
     private final SchedulerProperties schedulerProperties;
+    private final Map<UUID, Future<?>> scheduled = new HashMap<>();
 
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
-    private Map<UUID, Future<?>> scheduled = new HashMap<>();
 
     public Scheduler(SchedulerProperties schedulerProperties) {
         this.schedulerProperties = schedulerProperties;

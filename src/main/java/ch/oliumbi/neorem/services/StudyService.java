@@ -17,11 +17,9 @@ import java.util.UUID;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final EventRepository eventRepository;
 
-    public StudyService(StudyRepository studyRepository, EventRepository eventRepository) {
+    public StudyService(StudyRepository studyRepository) {
         this.studyRepository = studyRepository;
-        this.eventRepository = eventRepository;
     }
 
     public Page<Study> all(Pageable pageable, UUID patientId, UUID deviceId, String accessionId, String modality, LocalDate from, LocalDate to, String description) {

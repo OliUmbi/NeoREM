@@ -198,8 +198,4 @@ public class Study {
 
         return this;
     }
-
-    public UUID getId() {
-        return id;
-    }
 }

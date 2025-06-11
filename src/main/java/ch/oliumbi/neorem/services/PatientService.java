@@ -16,11 +16,9 @@ import java.util.UUID;
 public class PatientService {
 
     private final PatientRepository patientRepository;
-    private final StudyRepository studyRepository;
 
-    public PatientService(PatientRepository patientRepository, StudyRepository studyRepository) {
+    public PatientService(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
-        this.studyRepository = studyRepository;
     }
 
     public Page<Patient> all(Pageable pageable, String externalId, String externalIssuer) {

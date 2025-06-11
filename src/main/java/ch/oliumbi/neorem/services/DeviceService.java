@@ -16,11 +16,9 @@ import java.util.UUID;
 public class DeviceService {
 
     private final DeviceRepository deviceRepository;
-    private final StudyRepository studyRepository;
 
-    public DeviceService(DeviceRepository deviceRepository, StudyRepository studyRepository) {
+    public DeviceService(DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
-        this.studyRepository = studyRepository;
     }
 
     public Page<Device> all(Pageable pageable, String manufacturer, String model, String serial, String software) {
