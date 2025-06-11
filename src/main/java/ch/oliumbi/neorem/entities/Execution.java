@@ -41,5 +41,5 @@ public class Execution {
     // todo rethink
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "execution_id", referencedColumnName = "id")
-    private Set<ExecutionMessage> roles = new HashSet<>();
+    private Set<ExecutionMessage> messages = new HashSet<>();
 }

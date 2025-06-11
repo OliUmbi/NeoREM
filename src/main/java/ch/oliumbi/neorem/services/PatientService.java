@@ -26,14 +26,15 @@ public class PatientService {
         this.studyRepository = studyRepository;
     }
 
-    public Patient byId(UUID id) {
-        Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        patient.setStudies(studyRepository.findAllByPatientId(patient.getId()));
-
-        return patient;
-    }
-
     public Page<Patient> all(Pageable pageable, String externalId, String externalIssuer) {
         return patientRepository.findAll(PatientSpecification.filterAll(externalId, externalIssuer), pageable);
+    }
+
+    public Patient byId(UUID id) {
+        return patientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public void delete(UUID id) {
+        patientRepository.deleteById(id);
     }
 }

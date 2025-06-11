@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -25,6 +26,9 @@ public class Import {
 
     @Column(name = "execution_id", nullable = false)
     private UUID executionId;
+
+    @Column(name = "datetime")
+    private LocalDateTime datetime;
 
     @Column(name = "query", nullable = false)
     private String query;

@@ -26,14 +26,15 @@ public class DeviceService {
         this.studyRepository = studyRepository;
     }
 
-    public Device byId(UUID id) {
-        Device device = deviceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        device.setStudies(studyRepository.findAllByDeviceId(device.getId()));
-
-        return device;
-    }
-
     public Page<Device> all(Pageable pageable, String manufacturer, String model, String serial, String software) {
         return deviceRepository.findAll(DeviceSpecification.filterAll(manufacturer, model, serial, software), pageable);
+    }
+
+    public Device byId(UUID id) {
+        return deviceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public void delete(UUID id) {
+        deviceRepository.deleteById(id);
     }
 }

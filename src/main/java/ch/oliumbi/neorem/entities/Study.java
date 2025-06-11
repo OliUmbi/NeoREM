@@ -155,9 +155,6 @@ public class Study {
     @Column(name = "pharmaceutical_comment")
     private String pharmaceuticalComment;
 
-    @Transient
-    private List<Event> events;
-
     public Study merge(Study other) {
         if (other == null) {
             return this;

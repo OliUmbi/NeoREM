@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
+import org.springframework.data.domain.Sort.Direction;
 
 @RestController
 @RequestMapping("Study")
@@ -27,24 +28,32 @@ public class StudyController {
         this.studyService = studyService;
     }
 
+    // todo acquisition protocol (inside event), bmi, location, dlp, dap, ...,
+    @Secured("TEST")
+    @GetMapping
+    public Page<Study> all(
+            @RequestParam(required = false) UUID patientId,
+            @RequestParam(required = false) UUID deviceId,
+            @RequestParam(required = false) String accessionId,
+            @RequestParam(required = false) String modality,
+            @RequestParam(required = false) LocalDate from,
+            @RequestParam(required = false) LocalDate to,
+            @RequestParam(required = false) String description,
+            @PageableDefault(sort = "date", direction = Direction.DESC) Pageable pageable) {
+        return studyService.all(pageable, patientId, deviceId, accessionId, modality, from, to, description);
+    }
+
     @Secured("TEST")
     @GetMapping("{id}")
     public Study byId(@RequestParam UUID id) {
         return studyService.byId(id);
     }
 
-    // todo acquisition protocol (inside event), bmi, location, dlp, dap, ...,
     @Secured("TEST")
-    @GetMapping
-    public Page<Study> all(
-            @RequestParam(required = false) String accessionId,
-            @RequestParam(required = false) String modality,
-            @RequestParam(required = false) LocalDate from,
-            @RequestParam(required = false) LocalDate to,
-            @RequestParam(required = false) String description,
-            @PageableDefault(page = 0, size = 10, sort = "date", direction = Sort.Direction.DESC) Pageable pageable) {
-        return studyService.all(pageable, accessionId, modality, from, to, description);
+    @DeleteMapping("{id}")
+    public void delete(@RequestParam UUID id) {
+        studyService.delete(id);
     }
 
-    // todo delete
+    // todo diagrams
 }

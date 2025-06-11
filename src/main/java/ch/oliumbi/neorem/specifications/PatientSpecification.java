@@ -1,5 +1,6 @@
 package ch.oliumbi.neorem.specifications;
 
+import ch.oliumbi.neorem.entities.Patient;
 import ch.oliumbi.neorem.entities.Study;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class PatientSpecification {
 
-    public static Specification<Study> filterAll(String externalId, String externalIssuer) {
+    public static Specification<Patient> filterAll(String externalId, String externalIssuer) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 

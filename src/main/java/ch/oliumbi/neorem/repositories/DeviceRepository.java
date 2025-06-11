@@ -14,5 +14,5 @@ public interface DeviceRepository extends JpaRepository<Device, UUID> {
 
     Optional<Device> findByManufacturerAndModelAndSerialAndSoftware(String manufacturer, String model, String serial, String software);
 
-    Page<Device> findAll(Specification<Study> studySpecification, Pageable pageable);
+    Page<Device> findAll(Specification<Device> studySpecification, Pageable pageable);
 }

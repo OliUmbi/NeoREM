@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/home";
 import Studies from "./pages/studies";
-import Configurations from "./pages/configurations";
+import Settings from "./pages/settings";
 import Login from "./pages/login";
 import NotFound from "./pages/not-found";
 import Layout from "./components/layout/layout";
@@ -21,7 +21,6 @@ const App = () => {
           <BrowserRouter>
               <Routes>
                   <Route path="/login" Component={Login} />
-                  <Route path="*" Component={NotFound} />
                   <Route Component={Layout}>
                       <Route path="/" Component={Home} />
                       <Route path="/studies" Component={Studies} />
@@ -31,8 +30,9 @@ const App = () => {
                       <Route path="/indicators" Component={Indicators} />
                       <Route path="/messages" Component={Messages} />
                       <Route path="/users" Component={Users} />
-                      <Route path="/configurations" Component={Configurations} />
+                      <Route path="/settings" Component={Settings} />
                       <Route path="/user" Component={User} />
+                      <Route path="*" Component={NotFound} />
                   </Route>
               </Routes>
           </BrowserRouter>

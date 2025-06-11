@@ -1,12 +1,13 @@
 package ch.oliumbi.neorem.services;
 
-import ch.oliumbi.neorem.entities.Device;
-import ch.oliumbi.neorem.repositories.DeviceRepository;
+import ch.oliumbi.neorem.entities.Setting;
 import ch.oliumbi.neorem.repositories.SettingRepository;
-import ch.oliumbi.neorem.repositories.StudyRepository;
-import ch.oliumbi.neorem.specifications.DeviceSpecification;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SettingService {
@@ -15,5 +16,16 @@ public class SettingService {
 
     public SettingService(SettingRepository settingRepository) {
         this.settingRepository = settingRepository;
+    }
+
+    public List<Setting> all() {
+        return settingRepository.findAll();
+    }
+
+    public void update(String name, String value) {
+        Setting setting = settingRepository.findById(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        setting.setValue(value);
+
+        settingRepository.save(setting);
     }
 }

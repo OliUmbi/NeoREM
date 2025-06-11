@@ -1,5 +1,6 @@
 package ch.oliumbi.neorem.specifications;
 
+import ch.oliumbi.neorem.entities.Device;
 import ch.oliumbi.neorem.entities.Study;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class DeviceSpecification {
 
-    public static Specification<Study> filterAll(String manufacturer, String model, String serial, String software) {
+    public static Specification<Device> filterAll(String manufacturer, String model, String serial, String software) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 

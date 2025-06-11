@@ -18,9 +18,9 @@ public class MappingController {
 
     // todo get id (only then show executions)
 
-    // todo create
+    // todo create (recalculate mappings or something)
 
-    // todo update
+    // todo update (recalculate mappings)
 
-    // todo delete
+    // todo delete (recalculate mappings)
 }

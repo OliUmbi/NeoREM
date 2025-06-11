@@ -4,6 +4,8 @@ import ch.oliumbi.neorem.properties.SchedulerProperties;
 import ch.oliumbi.neorem.services.SchedulerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
@@ -17,22 +19,22 @@ import java.util.concurrent.ScheduledFuture;
 @Component
 public class Scheduler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
+
     private final SchedulerProperties schedulerProperties;
-    private final SchedulerService schedulerService;
 
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
     private Map<UUID, Future<?>> scheduled = new HashMap<>();
 
-    public Scheduler(SchedulerProperties schedulerProperties, SchedulerService schedulerService) {
+    public Scheduler(SchedulerProperties schedulerProperties) {
         this.schedulerProperties = schedulerProperties;
-        this.schedulerService = schedulerService;
     }
 
     @PostConstruct
     public void initialize() {
         threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.setPoolSize(schedulerProperties.getThreadPool());
-        threadPoolTaskScheduler.setErrorHandler(schedulerService::handle);
+        threadPoolTaskScheduler.setErrorHandler(t -> LOGGER.warn("Unexpected error occurred in scheduler", t));
         // todo virtual threads??
         threadPoolTaskScheduler.initialize();
     }

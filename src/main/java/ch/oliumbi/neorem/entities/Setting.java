@@ -19,9 +19,6 @@ import java.util.UUID;
 public class Setting {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
-
     @Column(name = "name", nullable = false)
     private String name;
 

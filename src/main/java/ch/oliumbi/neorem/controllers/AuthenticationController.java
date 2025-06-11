@@ -1,6 +1,7 @@
 package ch.oliumbi.neorem.controllers;
 
 import ch.oliumbi.neorem.services.AuthenticationService;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,11 @@ public class AuthenticationController {
 
     @Data
     public static class AuthenticateRequest {
+
+        @NotNull
         private String name;
+
+        @NotNull
         private String password;
     }
 }

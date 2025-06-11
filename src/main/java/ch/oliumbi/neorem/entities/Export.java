@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -26,6 +27,9 @@ public class Export {
     // todo one to one connection
     @Column(name = "execution_id", nullable = false)
     private UUID executionId;
+
+    @Column(name = "datetime")
+    private LocalDateTime datetime;
 
     @Column(name = "type", nullable = false)
     private String type;

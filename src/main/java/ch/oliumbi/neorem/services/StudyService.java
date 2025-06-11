@@ -28,14 +28,15 @@ public class StudyService {
         this.eventRepository = eventRepository;
     }
 
-    public Study byId(UUID id) {
-        Study study = studyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        study.setEvents(eventRepository.findAllByStudyId(study.getId()));
-
-        return study;
+    public Page<Study> all(Pageable pageable, UUID patientId, UUID deviceId, String accessionId, String modality, LocalDate from, LocalDate to, String description) {
+        return studyRepository.findAll(StudySpecification.filterAll(patientId, deviceId, accessionId, modality, from, to, description), pageable);
     }
 
-    public Page<Study> all(Pageable pageable, String accessionId, String modality, LocalDate from, LocalDate to, String description) {
-        return studyRepository.findAll(StudySpecification.filterAll(accessionId, modality, from, to, description), pageable);
+    public Study byId(UUID id) {
+        return studyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public void delete(UUID id) {
+        studyRepository.deleteById(id);
     }
 }

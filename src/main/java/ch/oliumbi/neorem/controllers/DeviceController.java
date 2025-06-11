@@ -9,10 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -27,21 +24,27 @@ public class DeviceController {
     }
 
     @Secured("TEST")
-    @GetMapping("{id}")
-    public Device byId(@RequestParam UUID id) {
-        return deviceService.byId(id);
-    }
-
-    @Secured("TEST")
     @GetMapping
     public Page<Device> all(
             @RequestParam(required = false) String manufacturer,
             @RequestParam(required = false) String model,
             @RequestParam(required = false) String serial,
             @RequestParam(required = false) String software,
-            @PageableDefault(page = 0, size = 10, sort = "manufacturer", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = "manufacturer") Pageable pageable) {
         return deviceService.all(pageable, manufacturer, model, serial, software);
     }
 
-    // todo delete
+    @Secured("TEST")
+    @GetMapping("{id}")
+    public Device byId(@RequestParam UUID id) {
+        return deviceService.byId(id);
+    }
+
+    @Secured("TEST")
+    @DeleteMapping("{id}")
+    public void delete(@RequestParam() UUID id) {
+        deviceService.delete(id);
+    }
+
+    // todo diagrams
 }

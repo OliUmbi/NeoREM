@@ -1,22 +1,47 @@
 package ch.oliumbi.neorem.controllers;
 
+import ch.oliumbi.neorem.entities.Execution;
+import ch.oliumbi.neorem.entities.Export;
 import ch.oliumbi.neorem.services.ExecutionService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import ch.oliumbi.neorem.services.ExportService;
+import jakarta.persistence.Column;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("Export")
 public class ExportController {
 
-    private final ExecutionService executionService;
+    private final ExportService exportService;
 
-    public ExportController(ExecutionService executionService) {
-        this.executionService = executionService;
+    public ExportController(ExportService exportService) {
+        this.exportService = exportService;
     }
 
-    // todo get all
+    @Secured("TEST")
+    @GetMapping
+    public Page<Export> all(
+            @RequestParam(required = false) LocalDateTime from,
+            @RequestParam(required = false) LocalDateTime to,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String filters,
+            @PageableDefault(sort = "datetime") Pageable pageable) {
+        return exportService.all(pageable, from, to, type, filters);
+    }
+
+    @Secured("TEST")
+    @GetMapping("{id}")
+    public Export byId(@PathVariable UUID id) {
+        return exportService.byId(id);
+    }
 
     // todo delete (not sure if needed)
 
-    // todo start export with params
+    // todo start export with params for studies, patients, devices and diagrams
 }

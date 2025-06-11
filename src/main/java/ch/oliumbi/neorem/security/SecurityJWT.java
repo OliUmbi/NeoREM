@@ -20,6 +20,8 @@ import java.util.UUID;
 @Component
 public class SecurityJWT {
 
+    // todo this should be in the authentication service
+
     private final SecurityProperties securityProperties;
 
     private Algorithm algorithm;

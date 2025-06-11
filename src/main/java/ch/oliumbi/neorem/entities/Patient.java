@@ -34,9 +34,6 @@ public class Patient {
     @Column(name = "sex")
     private String sex;
 
-    @Transient
-    private List<Study> studies;
-
     public Patient merge(Patient other) {
         if (other == null) {
             return this;

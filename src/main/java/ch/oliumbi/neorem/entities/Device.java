@@ -37,9 +37,6 @@ public class Device {
     @Column(name = "software")
     private String software;
 
-    @Transient
-    private List<Study> studies;
-
     public Device merge(Device other) {
         if (other == null) {
             return this;

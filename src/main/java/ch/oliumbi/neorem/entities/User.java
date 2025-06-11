@@ -1,5 +1,6 @@
 package ch.oliumbi.neorem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,8 @@ public class User {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    // todo rethink this not very nice. maybe i need to write DTOs
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -22,6 +23,9 @@ public class Notification {
     @Id
     @Column(name = "id", nullable = false)
     private UUID id;
+
+    @Column(name = "datetime", nullable = false)
+    private LocalDateTime datetime;
 
     @Column(name = "status", nullable = false)
     private String status;

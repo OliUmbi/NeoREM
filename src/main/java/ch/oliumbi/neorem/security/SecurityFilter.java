@@ -7,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -39,19 +38,21 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String token = authorization.substring(7);
 
+        // todo this should probably move to authentication service
+
         Optional<UUID> subject = securityJWT.subject(token);
         if (subject.isEmpty()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        Optional<User> user = userService.findById(subject.get());
-        if (user.isEmpty() || !securityJWT.valid(token, user.get())) {
+        User user = userService.byId(subject.get());
+        if (!securityJWT.valid(token, user)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        SecurityToken securityToken = new SecurityToken(user.get(), token);
+        SecurityToken securityToken = new SecurityToken(user, token);
         securityToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(securityToken);

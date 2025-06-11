@@ -1,8 +1,21 @@
 package ch.oliumbi.neorem.controllers;
 
+import ch.oliumbi.neorem.entities.Job;
+import ch.oliumbi.neorem.entities.Notification;
 import ch.oliumbi.neorem.services.JobService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("Job")
@@ -14,13 +27,60 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    // todo get all
+    @Secured("TEST")
+    @GetMapping
+    public List<Job> all() {
+        return jobService.all();
+    }
 
     // todo get id (only then show executions)
+    @Secured("TEST")
+    @GetMapping("{id}")
+    public Job byId(@RequestParam UUID id) {
+        return jobService.byId(id);
+    }
 
-    // todo create
+    @Secured("TEST")
+    @PostMapping
+    public void create(@RequestBody CreateRequest createRequest) {
+        jobService.create(createRequest.task, createRequest.cron, createRequest.enabled);
+    }
 
-    // todo update
+    @Secured("TEST")
+    @PutMapping("{id}")
+    public void update(@RequestParam UUID id, @RequestBody UpdateRequest updateRequest) {
+        jobService.update(id, updateRequest.task, updateRequest.cron, updateRequest.enabled);
+    }
 
-    // todo delete
+    @Secured("TEST")
+    @DeleteMapping("{id}")
+    public void delete(@RequestParam UUID id) {
+        jobService.delete(id);
+    }
+
+    @Data
+    public static class CreateRequest {
+
+        @NotNull
+        private String task;
+
+        @NotNull
+        private String cron;
+
+        @NotNull
+        private Boolean enabled;
+    }
+
+    @Data
+    public static class UpdateRequest {
+
+        @NotNull
+        private String task;
+
+        @NotNull
+        private String cron;
+
+        @NotNull
+        private Boolean enabled;
+    }
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeviceMapper {
 
+    // todo look at spring mappers and NullValuePropertyMappingStrategy
+
     public Device map(Dicom dicom) {
 
         Device device = new Device();

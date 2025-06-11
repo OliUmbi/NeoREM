@@ -14,5 +14,5 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
     Optional<Patient> findByExternalId(String externalId);
 
-    Page<Patient> findAll(Specification<Study> studySpecification, Pageable pageable);
+    Page<Patient> findAll(Specification<Patient> studySpecification, Pageable pageable);
 }

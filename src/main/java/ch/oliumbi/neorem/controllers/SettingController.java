@@ -1,8 +1,13 @@
 package ch.oliumbi.neorem.controllers;
 
+import ch.oliumbi.neorem.entities.Setting;
 import ch.oliumbi.neorem.services.SettingService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("Setting")
@@ -14,7 +19,23 @@ public class SettingController {
         this.settingService = settingService;
     }
 
-    // todo get all
+    // todo figure out what roles should exist
+    @Secured("TEST")
+    @GetMapping
+    public List<Setting> all() {
+        return settingService.all();
+    }
 
-    // todo update
+    @Secured("TEST")
+    @PutMapping("{name}")
+    public void update(@PathVariable String name, @RequestBody UpdateRequest updateRequest) {
+        settingService.update(name, updateRequest.value);
+    }
+
+    @Data
+    public static class UpdateRequest {
+
+        @NotNull
+        private String value;
+    }
 }

@@ -10,12 +10,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class StudySpecification {
 
-    public static Specification<Study> filterAll(String accessionId, String modality, LocalDate from, LocalDate to, String description) {
+    public static Specification<Study> filterAll(UUID patientId, UUID deviceId, String accessionId, String modality, LocalDate from, LocalDate to, String description) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
+
+            if (patientId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("patientId"), patientId));
+            }
+
+            if (deviceId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("deviceId"), deviceId));
+            }
 
             if (StringUtils.hasText(accessionId)) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("accessionId")), "%" + accessionId.toLowerCase() + "%"));
