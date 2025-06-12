@@ -22,6 +22,19 @@ mvn spring-boot:run -Dmaven.wagon.http.ssl.insecure=true
 ### Test files
 https://support.dcmtk.org/redmine/projects/dcmtk/wiki/DICOM_images
 
+### todos
+- dicom image import
+- scheduler / task
+- dicom find
+- dicom move / store
+- export studies, patients, devices
+- diagrams
+- export diagrams
+- frontend tables and filters
+- demo
+- logo
+- landing page
+
 ### Features
 - [ ] Dicom import
 - [ ] HL7 import
@@ -34,6 +47,10 @@ https://support.dcmtk.org/redmine/projects/dcmtk/wiki/DICOM_images
 - [ ] messaging
 - [ ] user management
 - [ ] configuration
+- [ ] advanced filters + saving
+- [ ] dicom viewer
+- [ ] advanced import handling 
+- [ ] advanced dicom find
 
 ## OpenREN Import
 
