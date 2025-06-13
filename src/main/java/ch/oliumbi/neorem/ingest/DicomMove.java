@@ -62,10 +62,8 @@ public class DicomMove {
         Association association = applicationEntity.connect(remoteConnection, aAssociateRQ);
 
         Attributes attributes = new Attributes();
-        attributes.setString(Tag.QueryRetrieveLevel, VR.CS, "IMAGE");
+        attributes.setString(Tag.QueryRetrieveLevel, VR.CS, "SERIES");
         attributes.setString(Tag.StudyInstanceUID, VR.UI, "1.2.840.113619.6.95.31.0.3.4.1.4400.13.9022703");
-        attributes.setString(Tag.SeriesInstanceUID, VR.UI, "1.3.12.2.1107.5.12.7.1410.30000024080704295561500000035");
-        attributes.setString(Tag.SOPInstanceUID, VR.UI, "1.3.12.2.1107.5.12.7.1410.30000024080704295561500000036");
 
         DimseRSP dimseRSP = association.cmove(UID.StudyRootQueryRetrieveInformationModelMove, Priority.NORMAL, attributes, UID.ImplicitVRLittleEndian, "NEOREM_PROVIDER");
 

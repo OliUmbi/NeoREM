@@ -81,7 +81,7 @@ public class DicomFind {
          */
 
         Attributes attributes = new Attributes();
-        attributes.setString(Tag.QueryRetrieveLevel, VR.CS, "SERIES");
+        attributes.setString(Tag.QueryRetrieveLevel, VR.CS, "STUDY");
         attributes.setString(Tag.StudyInstanceUID, VR.UI, "1.2.840.113619.6.95.31.0.3.4.1.4400.13.9022703");
         attributes.setNull(Tag.SeriesInstanceUID, VR.UI);
         attributes.setNull(Tag.SOPInstanceUID, VR.UI);

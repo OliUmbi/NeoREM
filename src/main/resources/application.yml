@@ -30,6 +30,7 @@ security:
 scheduler:
   thread-pool: 5
 
+# todo move this to database
 dicom:
   local:
     aet: NEOREM
