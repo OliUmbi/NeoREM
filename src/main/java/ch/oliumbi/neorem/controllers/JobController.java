@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -36,13 +37,13 @@ public class JobController {
     @Secured("TEST")
     @PostMapping
     public void create(@RequestBody CreateRequest createRequest) {
-        jobService.create(createRequest.task, createRequest.cron, createRequest.enabled);
+        jobService.create(createRequest.task, createRequest.cron, createRequest.enabled, createRequest.parameters);
     }
 
     @Secured("TEST")
     @PutMapping("{id}")
     public void update(@RequestParam UUID id, @RequestBody UpdateRequest updateRequest) {
-        jobService.update(id, updateRequest.task, updateRequest.cron, updateRequest.enabled);
+        jobService.update(id, updateRequest.task, updateRequest.cron, updateRequest.enabled, updateRequest.parameters);
     }
 
     @Secured("TEST")
@@ -62,6 +63,8 @@ public class JobController {
 
         @NotNull
         private Boolean enabled;
+
+        private Map<String, String> parameters;
     }
 
     @Data
@@ -75,5 +78,7 @@ public class JobController {
 
         @NotNull
         private Boolean enabled;
+
+        private Map<String, String> parameters;
     }
 }

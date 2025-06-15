@@ -47,7 +47,7 @@ services:
             "NEOREM_PROVIDER": [
               "NEOREM_PROVIDER", 
               "host.docker.internal", 
-              104
+              8004
             ],
             "NEOREM_CLIENT": [
               "NEOREM_CLIENT", 
@@ -56,5 +56,5 @@ services:
             ]
           }
         }
-    extra_hosts: # <--- ADD THIS SECTION
+    extra_hosts:
       - "host.docker.internal:host-gateway"

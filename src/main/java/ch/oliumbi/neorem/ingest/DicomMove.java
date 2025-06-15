@@ -63,17 +63,14 @@ public class DicomMove {
 
         Attributes attributes = new Attributes();
         attributes.setString(Tag.QueryRetrieveLevel, VR.CS, "SERIES");
-        attributes.setString(Tag.StudyInstanceUID, VR.UI, "1.2.840.113619.6.95.31.0.3.4.1.4400.13.9022703");
+        attributes.setString(Tag.SeriesInstanceUID, VR.UI, "1.3.6.1.4.1.5962.99.1.3532166422.478333303.1485295916310.14.0");
 
         DimseRSP dimseRSP = association.cmove(UID.StudyRootQueryRetrieveInformationModelMove, Priority.NORMAL, attributes, UID.ImplicitVRLittleEndian, "NEOREM_PROVIDER");
 
         while (dimseRSP.next()) {
-            Attributes command = dimseRSP.getCommand();
             Attributes dataset = dimseRSP.getDataset();
-            System.out.println("QueryRetrieveLevel: " + dataset.getString(Tag.QueryRetrieveLevel));
-            System.out.println("StudyInstanceUID: " + dataset.getString(Tag.StudyInstanceUID));
-            System.out.println("SeriesInstanceUID: " + dataset.getString(Tag.SeriesInstanceUID));
-            System.out.println("SOPInstanceUID: " + dataset.getString(Tag.SOPInstanceUID));
+
+            System.out.println(dataset);
         }
 
         association.release();

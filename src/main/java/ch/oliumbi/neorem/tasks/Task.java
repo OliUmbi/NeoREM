@@ -1,8 +1,12 @@
 package ch.oliumbi.neorem.tasks;
 
-public interface Task extends Runnable {
+import java.util.Map;
+
+public interface Task {
 
     // todo needed jobs housekeeping (remove execution logs that are old, delete stray dicom files, delete old exports + files, delete old imports)
 
     String name();
+
+    void run(Map<String, String> parameters);
 }

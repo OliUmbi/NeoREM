@@ -16,8 +16,8 @@ public class DicomStore {
 
     public static void main(String[] args) throws Exception {
         String localAET = "NEOREM_PROVIDER";
-        String localHost = "localhost";
-        int localPort = 104;
+        String localHost = "0.0.0.0";
+        int localPort = 8004;
 
         Connection localConnection = new Connection("NEOREM_PROVIDER", localHost, localPort);
         localConnection.setBindAddress("localhost");

@@ -43,14 +43,14 @@ public class Scheduler {
         threadPoolTaskScheduler.shutdown();
     }
 
-    public void run(UUID id, Task task) {
-        Future<?> future = threadPoolTaskScheduler.submit(task);
+    public void run(UUID id, Task task, Map<String, String> parameters) {
+        Future<?> future = threadPoolTaskScheduler.submit(() -> task.run(parameters));
 
         scheduled.put(id, future);
     }
 
-    public void schedule(UUID id, Task task, String cron) {
-        ScheduledFuture<?> scheduledFuture = threadPoolTaskScheduler.schedule(task, new CronTrigger(cron));
+    public void schedule(UUID id, Task task, Map<String, String> parameters, String cron) {
+        ScheduledFuture<?> scheduledFuture = threadPoolTaskScheduler.schedule(() -> task.run(parameters), new CronTrigger(cron));
 
         scheduled.put(id, scheduledFuture);
     }
